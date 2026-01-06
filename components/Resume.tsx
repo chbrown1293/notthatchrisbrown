@@ -1,9 +1,9 @@
 import {
     BarChart3,
     Compass,
-    ExternalLink,
     Fish,
     Github,
+    Linkedin,
     Mail,
     MapPin,
     Mountain,
@@ -14,6 +14,7 @@ import { ASIExpedition } from "./ASIExpedition";
 import { EarlyExpeditions } from "./EarlyExpeditions";
 import { EducationBasecamp } from "./EducationBasecamp";
 import { HackleThreadsExpedition } from "./HackleThreadsExpedition";
+import { Identity } from "./Identity";
 import { TappCarExpedition } from "./TappCarExpedition";
 
 export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
@@ -126,36 +127,37 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                     </div>
 
                     <div className="md:col-span-4 space-y-4">
+                        <Identity />
                         <div className="bg-lime-400 text-black p-6 rounded-[2.5rem] shadow-[0_0_30px_rgba(163,230,53,0.2)]">
                             <h3 className="text-[10px] font-black uppercase tracking-widest mb-4 opacity-70">
-                                Extraction Point
+                                External and Contact
                             </h3>
                             <div className="space-y-4 font-bold">
                                 <a
-                                    href="#"
+                                    href="mailto:chris@notthatchrisbrown.ca"
                                     className="flex items-center gap-3 hover:underline"
                                 >
-                                    <Mail size={18} /> chris@example.com
+                                    <Mail size={18} />{" "}
+                                    chris@notthatchrisbrown.ca
                                 </a>
                                 <a
-                                    href="#"
+                                    href="https://www.linkedin.com/in/chris-brown-bc/"
                                     className="flex items-center gap-3 hover:underline"
                                 >
-                                    <Github size={18} /> github.com/cbrown
+                                    <Linkedin size={18} /> LinkedIn
                                 </a>
                                 <a
-                                    href="#"
+                                    href="https://github.com/chbrown1293"
                                     className="flex items-center gap-3 hover:underline"
                                 >
-                                    <ExternalLink size={18} />{" "}
-                                    linkedin.com/in/cbrown
+                                    <Github size={18} /> GitHub
                                 </a>
                             </div>
                         </div>
 
                         <div className="bg-white/5 border border-white/10 p-6 rounded-[2.5rem]">
                             <h3 className="text-[10px] font-black uppercase tracking-widest mb-4 text-slate-500">
-                                Essential Gear
+                                Essentials
                             </h3>
                             <div className="flex flex-wrap gap-2">
                                 {[
@@ -186,7 +188,7 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                                 />
                             </div>
                             <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">
-                                Out of Office: BC Interior
+                                BC Interior
                             </span>
                         </div>
                     </div>

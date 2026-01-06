@@ -17,10 +17,10 @@ export default function ResumePage() {
             <div className="fixed bottom-6 right-6 z-50 print:hidden">
                 <button
                     onClick={() => handlePrint()}
-                    className="flex items-center gap-3 bg-lime-400 text-black px-8 py-4 rounded-full font-black uppercase tracking-tighter shadow-[0_0_20px_rgba(163,230,53,0.4)] hover:scale-105 active:scale-95 transition-all group"
+                    className="flex items-center gap-3 cursor-pointer bg-lime-400 text-black px-8 py-4 rounded-full font-black uppercase tracking-tighter shadow-[0_0_20px_rgba(163,230,53,0.4)] hover:scale-105 active:scale-95 transition-all group"
                 >
                     <Download size={20} className="group-hover:bounce" />
-                    Export Field Guide (PDF)
+                    Export PDF
                 </button>
             </div>
 

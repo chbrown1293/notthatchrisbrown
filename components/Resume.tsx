@@ -67,7 +67,7 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                             <div className="flex items-center gap-3 mb-6 text-lime-400">
                                 <Compass size={24} />
                                 <h2 className="text-xs font-black uppercase tracking-[0.2em]">
-                                    Mission Briefing
+                                    Summary
                                 </h2>
                             </div>
 

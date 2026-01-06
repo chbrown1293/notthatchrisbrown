@@ -269,13 +269,13 @@ export const ASIExpedition = () => {
 
                             {/* Expandable Content Area */}
                             <div
-                                className={`grid transition-all duration-300 ease-in-out ${
+                                className={`grid transition-all duration-300 ease-in-out print:grid-rows-[1fr] print:opacity-100 ${
                                     expandedRole === role.id
                                         ? "grid-rows-[1fr] opacity-100 mt-2"
                                         : "grid-rows-[0fr] opacity-0"
                                 }`}
                             >
-                                <div className="overflow-hidden">
+                                <div className="overflow-hidden print:overflow-visible">
                                     <div className="p-8 pt-0 space-y-6">
                                         {role.sections.map((section, idx) => (
                                             <div

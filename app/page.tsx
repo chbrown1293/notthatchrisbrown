@@ -9,7 +9,8 @@ export default function ResumePage() {
 
     const handlePrint = useReactToPrint({
         contentRef: componentRef,
-        documentTitle: "Alex_Fisher_Field_Guide",
+        documentTitle:
+            "Chris_Brown_Resume-" + new Date().toISOString().split("T")[0],
     });
 
     return (

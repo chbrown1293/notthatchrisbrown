@@ -30,8 +30,9 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
             </div>
 
             <div className="max-w-5xl mx-auto px-6 -mt-24 relative z-10">
-                <header className="flex flex-col md:flex-row items-end gap-6 mb-12">
-                    <div className="w-40 h-40 rounded-full border-8 border-[#142114] bg-slate-800 overflow-hidden shadow-2xl shrink-0">
+                <header className="relative flex flex-col items-center justify-center pt-12 pb-8">
+                    {/* PROFILE PICTURE: Moved to absolute positioning so it doesn't "push" the text */}
+                    <div className="md:absolute md:top-0 md:right-0 w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-[#142114] bg-slate-800 overflow-hidden shadow-2xl z-20 shrink-0">
                         <img
                             src="/profile.jpg"
                             alt="Chris Brown"
@@ -39,22 +40,25 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                         />
                     </div>
 
-                    <div className="flex-1 pb-4">
-                        <div className="flex items-center gap-2">
-                            <h1 className="text-4xl font-black tracking-tight uppercase italic">
+                    {/* TEXT CONTENT: Now has w-full and text-center to guarantee perfect alignment */}
+                    <div className="w-full text-center z-10">
+                        <div className="flex items-center justify-center gap-2">
+                            <h1 className="text-5xl font-black tracking-tighter uppercase italic drop-shadow-md">
                                 Chris Brown
                             </h1>
                         </div>
-                        <p className="text-lime-400 font-mono text-sm tracking-wider uppercase font-bold mt-1">
+
+                        <p className="text-lime-400 font-mono text-sm tracking-widest uppercase font-black mt-2">
                             Technical Product Leader | Engineering Manager |
                             Full-Stack
                         </p>
-                        <div className="flex items-center gap-4 mt-3 text-slate-400 text-sm">
+
+                        <div className="flex items-center justify-center gap-4 mt-4 text-slate-400 text-xs font-bold uppercase tracking-widest">
                             <span className="flex items-center gap-1">
-                                <MapPin size={14} /> Golden, British Columbia,
-                                Canada
+                                <MapPin size={14} className="text-lime-600" />{" "}
+                                Golden, British Columbia, Canada
                             </span>
-                            <span className="flex items-center gap-1 uppercase tracking-widest text-[10px] bg-white/10 px-2 py-0.5 rounded">
+                            <span className="bg-white/10 px-2 py-0.5 rounded text-[10px] border border-white/10">
                                 Open to Work
                             </span>
                         </div>

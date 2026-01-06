@@ -28,7 +28,7 @@ export const Identity = () => (
                         <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 border border-blue-500/20">
                             <Waves size={14} />
                         </div>
-                        <span>Fly-Fishing and Tying</span>
+                        <span>Fly-fishing and tying</span>
                     </div>
 
                     <div className="flex items-center gap-3 text-xs text-slate-400">

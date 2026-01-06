@@ -24,7 +24,7 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
             className="min-h-screen bg-[#142114] text-slate-100 font-sans selection:bg-lime-500 selection:text-black"
         >
             <div className="relative h-64 md:h-80 w-full overflow-hidden">
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center">
+                <div className="absolute inset-0 bg-[url('/golden.png')] bg-cover bg-top">
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#142114]"></div>
                 </div>
             </div>

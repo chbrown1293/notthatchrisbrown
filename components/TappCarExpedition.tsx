@@ -53,7 +53,7 @@ export const TappCarExpedition = () => {
             <div className="absolute left-4 top-8 bottom-[-40px] w-[2px] bg-orange-500/20"></div>
 
             <div className="bg-white/5 border border-white/10 rounded-[3rem] p-8 hover:bg-white/[0.07] transition-all backdrop-blur-md">
-                <div className="flex justify-between items-start mb-6">
+                <div className="flex flex-col md:flex-row justify-between items-start mb-6">
                     <div>
                         <h3 className="text-3xl font-black text-white italic tracking-tight uppercase leading-tight">
                             <Link
@@ -77,7 +77,7 @@ export const TappCarExpedition = () => {
                                 }}
                             />
                         </h3>
-                        <p className="text-orange-400 font-mono text-[10px] uppercase font-bold tracking-[0.2em] mt-2">
+                        <p className="text-orange-400 font-mono text-[10px] uppercase font-bold tracking-[0.2em] my-2">
                             Chief Technology Officer | Jan 2016 - Jul 2017
                         </p>
                     </div>

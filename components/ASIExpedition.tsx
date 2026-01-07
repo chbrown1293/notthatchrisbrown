@@ -241,7 +241,7 @@ export const ASIExpedition = () => {
                     </p>
                     <div className="mt-10">
                         <p className="text-sm text-gray-300">
-                            <span className="inline-block align-middle mr-1 -mt-8">
+                            <span className="inline-block align-middle mr-1 -mt-8 ">
                                 {ASILogo}
                             </span>
                             <span className="-ml-4">
@@ -296,10 +296,14 @@ export const ASIExpedition = () => {
                             </div>
 
                             <p className="text-indigo-400 font-mono text-[10px] uppercase font-bold tracking-[0.2em] mt-2">
-                                Remote | 2017 - Present
+                                Remote | Aug 2017 - Present
                             </p>
                         </div>
-                        <Link href="https://askpolly.ai" target="_blank">
+                        <Link
+                            href="https://askpolly.ai"
+                            target="_blank"
+                            className="hidden lg:block"
+                        >
                             {ASILogo}
                         </Link>
                     </div>

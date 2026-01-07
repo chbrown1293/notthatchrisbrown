@@ -42,7 +42,7 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                     {/* TEXT CONTENT: Now has w-full and text-center to guarantee perfect alignment */}
                     <div className="w-full text-center z-10">
                         <div className="flex items-center justify-center gap-2">
-                            <h1 className="text-5xl font-black tracking-tighter uppercase italic drop-shadow-md">
+                            <h1 className="text-5xl font-black tracking-tighter uppercase italic drop-shadow-md pr-2">
                                 Chris Brown
                             </h1>
                         </div>
@@ -52,7 +52,7 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                             Full-Stack
                         </p>
 
-                        <div className="flex items-center justify-center gap-4 mt-4 text-slate-400 text-xs font-bold uppercase tracking-widest">
+                        <div className="flex flex-wrap items-center justify-center gap-4 mt-4 text-slate-400 text-xs font-bold uppercase tracking-widest">
                             <span className="flex items-center gap-1">
                                 <MapPin size={14} className="text-lime-600" />{" "}
                                 Golden, British Columbia, Canada

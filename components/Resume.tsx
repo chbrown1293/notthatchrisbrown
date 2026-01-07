@@ -7,6 +7,7 @@ import {
     MapPin,
     Mountain,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { forwardRef } from "react";
 import { ASIExpedition } from "./ASIExpedition";
@@ -23,19 +24,29 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
             className="min-h-screen bg-[#142114] text-slate-100 font-sans selection:bg-lime-500 selection:text-black"
         >
             <div className="relative h-64 md:h-80 w-full overflow-hidden">
-                <div className="absolute inset-0 bg-[url('/golden.png')] bg-cover bg-top">
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#142114]"></div>
-                </div>
-            </div>
+                {/* next/image replacing the CSS background-image */}
+                <Image
+                    src="/golden.png"
+                    alt="Golden BC Landscape"
+                    fill
+                    priority // Tells Next.js to load this immediately
+                    className="object-cover object-top"
+                    quality={90}
+                />
 
+                {/* The Gradient Overlay (Must be absolute and z-index higher than the image) */}
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#142114] z-10"></div>
+            </div>
             <div className="max-w-5xl mx-auto px-6 -mt-24 relative z-10">
                 <header className="relative flex flex-col items-center justify-center pt-12 pb-8">
                     {/* PROFILE PICTURE: Moved to absolute positioning so it doesn't "push" the text */}
                     <div className="md:absolute md:top-0 md:right-0 w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-[#142114] bg-slate-800 overflow-hidden shadow-2xl z-20 shrink-0">
-                        <img
+                        <Image
                             src="/profile.jpg"
                             alt="Chris Brown"
                             className="w-full h-full object-cover"
+                            width={160}
+                            height={160}
                         />
                     </div>
 
@@ -196,10 +207,12 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                             "linear-gradient(to bottom, transparent 0%, black 100%)",
                     }}
                 >
-                    <img
+                    <Image
                         src="/ontarioLakes1.svg"
                         alt="Topographic Map"
                         className="w-full h-full object-cover opacity-40" // Adjusted opacity to keep it subtle
+                        fill
+                        quality={80}
                     />
                 </div>
             </div>

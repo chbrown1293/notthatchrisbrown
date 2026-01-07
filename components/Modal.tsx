@@ -1,6 +1,6 @@
 // components/Modal.tsx
 import { Compass, X } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 
 type ColorScheme = "lime" | "blue" | "orange" | "purple";
 
@@ -19,6 +19,26 @@ export default function Modal({
     icon?: React.ReactNode;
     colorScheme?: ColorScheme;
 }) {
+    const handleClose = () => {
+        window.dispatchEvent(
+            new CustomEvent("modalStateChange", { detail: { open: false } })
+        );
+        onClose();
+    };
+
+    useEffect(() => {
+        if (isVisible) {
+            window.dispatchEvent(
+                new CustomEvent("modalStateChange", { detail: { open: true } })
+            );
+            document.body.style.overflow = "hidden";
+        }
+
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [isVisible]);
+
     if (!isVisible) return null;
 
     const themes = {
@@ -55,14 +75,14 @@ export default function Modal({
     const theme = themes[colorScheme];
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 print:hidden">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 print:hidden">
             <div
-                className="absolute inset-0 bg-[#0d140d]/80 backdrop-blur-md transition-opacity"
-                onClick={onClose}
+                className="absolute z-[210] inset-0 bg-[#0d140d]/80 backdrop-blur-md transition-opacity"
+                onClick={handleClose}
             />
 
             <div
-                className={`relative w-full max-w-2xl bg-[#142114] border ${theme.border} rounded-[2.5rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden animate-in fade-in zoom-in duration-300`}
+                className={`relative w-full max-w-2xl z-[220] bg-[#142114] border ${theme.border} rounded-[2.5rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden animate-in fade-in zoom-in duration-300`}
             >
                 <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/topography.png')]" />
 
@@ -81,7 +101,7 @@ export default function Modal({
                     </div>
 
                     <button
-                        onClick={onClose}
+                        onClick={handleClose}
                         className="p-2 rounded-full hover:bg-white/10 text-slate-500 hover:text-white transition-all hover:rotate-90 cursor-pointer"
                     >
                         <X size={20} />
@@ -98,7 +118,7 @@ export default function Modal({
 
                 <div className="relative z-10 p-4 border-t border-white/5 bg-black/20 flex justify-between items-center px-8">
                     <button
-                        onClick={onClose}
+                        onClick={handleClose}
                         className={`text-[10px] font-black ${theme.text} uppercase tracking-widest hover:underline ml-auto cursor-pointer`}
                     >
                         Close

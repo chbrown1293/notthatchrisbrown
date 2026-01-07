@@ -1,5 +1,4 @@
 import {
-    BarChart3,
     Compass,
     Fish,
     Github,
@@ -7,8 +6,8 @@ import {
     Mail,
     MapPin,
     Mountain,
-    Zap,
 } from "lucide-react";
+import Link from "next/link";
 import { forwardRef } from "react";
 import { ASIExpedition } from "./ASIExpedition";
 import { EarlyExpeditions } from "./EarlyExpeditions";
@@ -48,7 +47,7 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                             </h1>
                         </div>
 
-                        <p className="text-lime-400 font-mono text-sm tracking-widest uppercase font-black mt-2">
+                        <p className="text-lime-400 font-mono text-sm uppercase font-black mt-2">
                             Technical Product Leader | Engineering Manager |
                             Full-Stack
                         </p>
@@ -101,28 +100,9 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="bg-[#1d2e1d] p-6 rounded-[2rem] border border-lime-900/30">
-                                <BarChart3 className="text-lime-400 mb-3" />
-                                <h3 className="font-bold text-white mb-1">
-                                    Data-Driven Strategy
-                                </h3>
-                                <p className="text-xs text-slate-400">
-                                    Scaling platforms like TappCar to 500k+
-                                    rides through real-time ops tooling.
-                                </p>
-                            </div>
-                            <div className="bg-[#1d2e1d] p-6 rounded-[2rem] border border-lime-900/30">
-                                <Zap className="text-lime-400 mb-3" />
-                                <h3 className="font-bold text-white mb-1">
-                                    Full-Stack Execution
-                                </h3>
-                                <p className="text-xs text-slate-400">
-                                    Hands-on leadership in Next.js, TypeScript,
-                                    and ML-driven datasets.
-                                </p>
-                            </div>
-                        </div>
+                        <h4 className="text-lime-400 font-mono uppercase font-black mt-2 ml-2 tracking-widest">
+                            Experience
+                        </h4>
                         <ASIExpedition />
                         <HackleThreadsExpedition />
                         <TappCarExpedition />
@@ -137,25 +117,27 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                                 External and Contact
                             </h3>
                             <div className="space-y-4 font-bold">
-                                <a
+                                <Link
                                     href="mailto:chris@notthatchrisbrown.ca"
                                     className="flex items-center gap-3 hover:underline"
                                 >
                                     <Mail size={18} />{" "}
                                     chris@notthatchrisbrown.ca
-                                </a>
-                                <a
+                                </Link>
+                                <Link
                                     href="https://www.linkedin.com/in/chris-brown-bc/"
                                     className="flex items-center gap-3 hover:underline"
+                                    target="_blank"
                                 >
                                     <Linkedin size={18} /> LinkedIn
-                                </a>
-                                <a
+                                </Link>
+                                <Link
                                     href="https://github.com/chbrown1293"
                                     className="flex items-center gap-3 hover:underline"
+                                    target="_blank"
                                 >
                                     <Github size={18} /> GitHub
-                                </a>
+                                </Link>
                             </div>
                         </div>
 

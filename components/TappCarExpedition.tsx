@@ -1,4 +1,4 @@
-import { Car, MapPin, ShieldCheck, Trophy, Zap } from "lucide-react";
+import { Car, ShieldCheck, Zap } from "lucide-react";
 
 export const TappCarExpedition = () => (
     <div className="relative pl-12 group">
@@ -17,8 +17,23 @@ export const TappCarExpedition = () => (
                         Chief Technology Officer | Jan 2016 - Jul 2017
                     </p>
                 </div>
-                <div className="bg-orange-500/20 p-2 rounded-2xl border border-orange-500/30">
-                    <Trophy className="text-orange-400" size={24} />
+                <div className="flex gap-4">
+                    <div className="text-right">
+                        <p className="text-[9px] uppercase font-black text-slate-500 tracking-tighter">
+                            Trips
+                        </p>
+                        <p className="text-xl font-black text-white italic leading-none">
+                            500k+
+                        </p>
+                    </div>
+                    <div className="text-right border-l border-white/10 pl-4">
+                        <p className="text-[9px] uppercase font-black text-slate-500 tracking-tighter">
+                            Drivers
+                        </p>
+                        <p className="text-xl font-black text-white italic leading-none">
+                            300+
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -45,18 +60,6 @@ export const TappCarExpedition = () => (
                         integrations.
                     </p>
                 </div>
-            </div>
-
-            <div className="bg-orange-400 text-black p-4 rounded-2xl flex items-center justify-between shadow-lg">
-                <div className="flex items-center gap-3">
-                    <MapPin size={18} />
-                    <span className="text-[10px] font-black uppercase tracking-widest">
-                        Market Impact:
-                    </span>
-                </div>
-                <span className="text-lg font-black italic tracking-tighter">
-                    500,000+ Completed Rides
-                </span>
             </div>
         </div>
     </div>

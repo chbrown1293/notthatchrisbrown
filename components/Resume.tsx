@@ -55,7 +55,11 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                         <div className="flex flex-wrap items-center justify-center gap-4 mt-4 text-slate-400 text-xs font-bold uppercase tracking-widest">
                             <span className="flex items-center gap-1">
                                 <MapPin size={14} className="text-lime-600" />{" "}
-                                Golden, British Columbia, Canada
+                                Golden,{" "}
+                                <span className="hidden lg:block">
+                                    British Columbia
+                                </span>
+                                <span className="lg:hidden">BC</span>, Canada
                             </span>
                             <span className="bg-white/10 px-2 py-0.5 rounded text-[10px] border border-white/10">
                                 Open to Work

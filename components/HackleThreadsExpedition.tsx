@@ -1,4 +1,5 @@
 import { Fish, Layers, Map as MapIcon, Smartphone } from "lucide-react";
+import Link from "next/link";
 
 export const HackleThreadsExpedition = () => (
     <div className="relative pl-12 group">
@@ -15,15 +16,17 @@ export const HackleThreadsExpedition = () => (
                 <div className="flex flex-col md:flex-row justify-between items-start mb-6 gap-4">
                     <div>
                         <div className="flex items-center gap-3">
-                            <h3 className="text-3xl font-black text-white italic tracking-tighter uppercase">
-                                Hackle + Threads
-                            </h3>
-                            <span className="text-[10px] bg-lime-500/10 text-lime-400 px-2 py-0.5 rounded border border-lime-500/20 font-bold uppercase tracking-widest">
-                                Live Platform
-                            </span>
+                            <Link
+                                href="https://hackleandthreads.com"
+                                target="_blank"
+                            >
+                                <h3 className="text-3xl font-black text-white italic tracking-tighter uppercase hover:underline">
+                                    Hackle + Threads
+                                </h3>
+                            </Link>
                         </div>
                         <p className="text-slate-400 font-mono text-[10px] uppercase font-bold tracking-[0.2em] mt-2">
-                            Founder • Dec 2024 - Present
+                            Founder | Dec 2024 - Present
                         </p>
                     </div>
 
@@ -38,7 +41,7 @@ export const HackleThreadsExpedition = () => (
                         </div>
                         <div className="text-right border-l border-white/10 pl-4">
                             <p className="text-[9px] uppercase font-black text-slate-500 tracking-tighter">
-                                Active Tyers
+                                Active Users
                             </p>
                             <p className="text-xl font-black text-white italic leading-none">
                                 50+

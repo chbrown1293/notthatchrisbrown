@@ -12,9 +12,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 export const ASIExpedition = () => {
-    const [expandedRole, setExpandedRole] = useState<string | null>(
-        "dev-manager"
-    );
+    const [expandedRole, setExpandedRole] = useState<string | null>(null);
 
     const toggleRole = (role: string) => {
         setExpandedRole(expandedRole === role ? null : role);
@@ -123,7 +121,7 @@ export const ASIExpedition = () => {
                                 Advanced Symbolics Inc.
                             </h3>
                             <p className="text-indigo-400 font-mono text-[10px] uppercase font-bold tracking-[0.2em] mt-2">
-                                Remote • 8 Years 6 Months
+                                Remote | 2017 - Present
                             </p>
                         </div>
                         <Link href="https://askpolly.ai" target="_blank">

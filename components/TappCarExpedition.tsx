@@ -14,7 +14,7 @@ export const TappCarExpedition = () => (
                         TappCar
                     </h3>
                     <p className="text-orange-400 font-mono text-[10px] uppercase font-bold tracking-[0.2em] mt-2">
-                        Chief Technology Officer • 1.7 Years
+                        Chief Technology Officer | Jan 2016 - Jul 2017
                     </p>
                 </div>
                 <div className="bg-orange-500/20 p-2 rounded-2xl border border-orange-500/30">

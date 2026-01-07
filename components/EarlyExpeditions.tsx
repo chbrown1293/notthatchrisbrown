@@ -8,7 +8,6 @@ export const EarlyExpeditions = () => (
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pl-4">
             <div className="bg-white/[0.02] border border-white/5 p-6 rounded-[2rem] relative group hover:bg-white/[0.05] transition-colors">
-                <div className="absolute -left-2 top-6 w-1 h-10 bg-slate-700 rounded-full group-hover:bg-lime-500 transition-colors" />
                 <h3 className="font-black text-slate-200 uppercase text-sm tracking-tighter">
                     Alberta Counsel
                 </h3>
@@ -28,7 +27,6 @@ export const EarlyExpeditions = () => (
             </div>
 
             <div className="bg-white/[0.02] border border-white/5 p-6 rounded-[2.5rem] relative group hover:bg-white/[0.05] transition-colors">
-                <div className="absolute -left-2 top-6 w-1 h-10 bg-slate-700 rounded-full group-hover:bg-lime-500 transition-colors" />
                 <h3 className="font-black text-slate-200 uppercase text-sm tracking-tighter">
                     Golden & District Historical Society
                 </h3>

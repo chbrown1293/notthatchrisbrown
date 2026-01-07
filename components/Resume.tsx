@@ -123,8 +123,8 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                                 </p>
                             </div>
                         </div>
-                        <HackleThreadsExpedition />
                         <ASIExpedition />
+                        <HackleThreadsExpedition />
                         <TappCarExpedition />
                         <EarlyExpeditions />
                         <EducationBasecamp />

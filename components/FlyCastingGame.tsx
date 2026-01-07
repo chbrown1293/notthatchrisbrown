@@ -251,7 +251,7 @@ export default function FlyCastingGame() {
 
     return (
         <div
-            className="relative w-full h-[600px] bg-sky-300 rounded-xl overflow-hidden cursor-crosshair select-none shadow-2xl border-4 border-slate-700"
+            className="relative w-full h-full bg-sky-300 rounded-xl overflow-hidden cursor-crosshair select-none shadow-2xl border-4 border-slate-700"
             onMouseLeave={handleMouseUp}
         >
             {/* UI Overlay */}

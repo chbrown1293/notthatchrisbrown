@@ -184,6 +184,25 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                     </div>
                 </div>
             </div>
+            {/* TOPO map */}
+            {/* TOPO map with gradual fade */}
+            <div className="relative w-full mt-[-15rem] md:mt-[-20rem] pointer-events-none select-none">
+                <div
+                    className="w-full h-64 md:h-96"
+                    style={{
+                        WebkitMaskImage:
+                            "linear-gradient(to bottom, transparent 0%, black 100%)",
+                        maskImage:
+                            "linear-gradient(to bottom, transparent 0%, black 100%)",
+                    }}
+                >
+                    <img
+                        src="/ontarioLakes1.svg"
+                        alt="Topographic Map"
+                        className="w-full h-full object-cover opacity-40" // Adjusted opacity to keep it subtle
+                    />
+                </div>
+            </div>
         </div>
     );
 });

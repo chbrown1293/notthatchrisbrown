@@ -1,15 +1,17 @@
 import {
+    Briefcase,
     Compass,
     Fish,
     Github,
     Linkedin,
     Mail,
     MapPin,
-    Mountain,
+    Mountain, // Added for tab icon
+    User, // Added for tab icon
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react"; // Added useState
 import { ASIExpedition } from "./ASIExpedition";
 import { EarlyExpeditions } from "./EarlyExpeditions";
 import { EducationBasecamp } from "./EducationBasecamp";
@@ -18,28 +20,30 @@ import { Identity } from "./Identity";
 import { TappCarExpedition } from "./TappCarExpedition";
 
 export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
+    // 1. Define the active tab state
+    const [activeTab, setActiveTab] = useState<"experience" | "about">(
+        "experience"
+    );
+
     return (
         <div
             ref={ref}
             className="min-h-screen bg-[#142114] text-slate-100 font-sans selection:bg-lime-500 selection:text-black"
         >
             <div className="relative h-64 md:h-80 w-full overflow-hidden">
-                {/* next/image replacing the CSS background-image */}
                 <Image
                     src="/golden.png"
                     alt="Golden BC Landscape"
                     fill
-                    priority // Tells Next.js to load this immediately
+                    priority
                     className="object-cover object-top"
                     quality={90}
                 />
-
-                {/* The Gradient Overlay (Must be absolute and z-index higher than the image) */}
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#142114] z-10"></div>
             </div>
+
             <div className="max-w-5xl mx-auto px-6 -mt-24 relative z-10">
                 <header className="relative flex flex-col items-center justify-center pt-12 pb-8">
-                    {/* PROFILE PICTURE: Moved to absolute positioning so it doesn't "push" the text */}
                     <div className="md:absolute md:top-0 md:right-0 w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-[#142114] bg-slate-800 overflow-hidden shadow-2xl z-20 shrink-0">
                         <Image
                             src="/profile.jpg"
@@ -50,7 +54,6 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                         />
                     </div>
 
-                    {/* TEXT CONTENT: Now has w-full and text-center to guarantee perfect alignment */}
                     <div className="w-full text-center z-10">
                         <div className="flex items-center justify-center gap-2">
                             <h1 className="text-5xl font-black tracking-tighter uppercase italic drop-shadow-md pr-2">
@@ -66,11 +69,7 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                         <div className="flex flex-wrap items-center justify-center gap-4 mt-4 text-slate-400 text-xs font-bold uppercase tracking-widest">
                             <span className="flex items-center gap-1">
                                 <MapPin size={14} className="text-lime-600" />{" "}
-                                Golden,{" "}
-                                <span className="hidden lg:block">
-                                    British Columbia
-                                </span>
-                                <span className="lg:hidden">BC</span>, Canada
+                                Golden, BC, Canada
                             </span>
                             <span className="bg-white/10 px-2 py-0.5 rounded text-[10px] border border-white/10">
                                 Open to Work
@@ -79,8 +78,38 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                     </div>
                 </header>
 
+                {/* 2. TAB TOGGLE (Mobile Only) */}
+                <div className="flex md:hidden bg-white/5 border border-white/10 p-1 rounded-2xl mb-8">
+                    <button
+                        onClick={() => setActiveTab("experience")}
+                        className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${
+                            activeTab === "experience"
+                                ? "bg-lime-500 text-black"
+                                : "text-slate-400"
+                        }`}
+                    >
+                        <Briefcase size={16} /> Experience
+                    </button>
+                    <button
+                        onClick={() => setActiveTab("about")}
+                        className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${
+                            activeTab === "about"
+                                ? "bg-lime-500 text-black"
+                                : "text-slate-400"
+                        }`}
+                    >
+                        <User size={16} /> About
+                    </button>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6 pb-20">
-                    <div className="md:col-span-8 space-y-6">
+                    {/* 3. LEFT COLUMN (Journey/Experience) */}
+                    {/* Logic: Hidden on mobile IF activeTab is NOT experience. Always visible on md+ */}
+                    <div
+                        className={`${
+                            activeTab === "experience" ? "block" : "hidden"
+                        } md:block md:col-span-8 space-y-6`}
+                    >
                         <div className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-md shadow-xl">
                             <div className="flex items-center gap-3 mb-6 text-lime-400">
                                 <Compass size={24} />
@@ -88,7 +117,6 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                                     Summary
                                 </h2>
                             </div>
-
                             <div className="prose prose-invert max-w-none space-y-4 text-slate-300 leading-relaxed">
                                 <p className="text-xl font-medium text-white italic border-l-4 border-lime-500 pl-4">
                                     "I’m a technical leader with 8+ years
@@ -125,8 +153,15 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                         <EducationBasecamp />
                     </div>
 
-                    <div className="md:col-span-4 space-y-4">
+                    {/* 4. RIGHT COLUMN (Identity/Sidebar) */}
+                    {/* Logic: Hidden on mobile IF activeTab is NOT about. Always visible on md+ */}
+                    <div
+                        className={`${
+                            activeTab === "about" ? "block" : "hidden"
+                        } md:block md:col-span-4 space-y-4`}
+                    >
                         <Identity />
+
                         <div className="bg-lime-400 text-black p-6 rounded-[2.5rem] shadow-[0_0_30px_rgba(163,230,53,0.2)]">
                             <h3 className="text-[10px] font-black uppercase tracking-widest mb-4 opacity-70">
                                 External and Contact
@@ -140,14 +175,14 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                                     chris@notthatchrisbrown.ca
                                 </Link>
                                 <Link
-                                    href="https://www.linkedin.com/in/chris-brown-bc/"
+                                    href="https://linkedin.com/..."
                                     className="flex items-center gap-3 hover:underline"
                                     target="_blank"
                                 >
                                     <Linkedin size={18} /> LinkedIn
                                 </Link>
                                 <Link
-                                    href="https://github.com/chbrown1293"
+                                    href="https://github.com/..."
                                     className="flex items-center gap-3 hover:underline"
                                     target="_blank"
                                 >
@@ -167,8 +202,6 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                                     "SaaS Arch",
                                     "Product Strategy",
                                     "ML Integration",
-                                    "Data Pipelines",
-                                    "Engineering Management",
                                 ].map((skill) => (
                                     <span
                                         key={skill}
@@ -195,8 +228,8 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                     </div>
                 </div>
             </div>
-            {/* TOPO map */}
-            {/* TOPO map with gradual fade */}
+
+            {/* TOPO MAP (Kept at bottom) */}
             <div className="relative w-full mt-[-15rem] md:mt-[-20rem] pointer-events-none select-none">
                 <div
                     className="w-full h-64 md:h-96"
@@ -210,9 +243,8 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                     <Image
                         src="/ontarioLakes1.svg"
                         alt="Topographic Map"
-                        className="w-full h-full object-cover opacity-40" // Adjusted opacity to keep it subtle
+                        className="w-full h-full object-cover opacity-40"
                         fill
-                        quality={80}
                     />
                 </div>
             </div>

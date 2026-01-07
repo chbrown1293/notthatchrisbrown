@@ -4,12 +4,12 @@ export const Identity = () => (
     <div className="bg-white/5 border border-white/10 p-8 rounded-[2.5rem] backdrop-blur-md relative overflow-hidden group">
         <Map className="absolute -right-4 -bottom-4 text-white/[0.03] w-32 h-32 rotate-12" />
 
-        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-lime-500 mb-6 flex items-center gap-2">
-            <User size={16} /> About Me
+        <h3 className="text-xs font-black uppercase tracking-[0.2em] text-lime-500 mb-6 flex items-center gap-2">
+            <User size={24} /> About Me
         </h3>
 
         <div className="space-y-4 relative z-10">
-            <p className="text-sm text-slate-300 leading-relaxed">
+            <p className="lg:text-sm text-slate-300 leading-relaxed">
                 Based in{" "}
                 <span className="text-white font-bold">Golden, BC</span>, I love
                 all things related to web/mobile development and data

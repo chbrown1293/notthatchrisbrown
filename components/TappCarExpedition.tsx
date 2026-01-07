@@ -53,9 +53,9 @@ export const TappCarExpedition = () => {
             <div className="absolute left-4 top-8 bottom-[-40px] w-[2px] bg-orange-500/20"></div>
 
             <div className="bg-white/5 border border-white/10 rounded-[3rem] p-8 hover:bg-white/[0.07] transition-all backdrop-blur-md">
-                <div className="flex flex-col md:flex-row justify-between items-start mb-6">
+                <div className="relative flex flex-col md:flex-row justify-between items-start mb-6">
                     <div>
-                        <h3 className="text-3xl font-black text-white italic tracking-tight uppercase leading-tight">
+                        <h3 className="relative text-3xl font-black text-white italic tracking-tight uppercase leading-tight">
                             <Link
                                 href="https://hackleandthreads.com"
                                 target="_blank"
@@ -65,7 +65,7 @@ export const TappCarExpedition = () => {
                             </Link>
                             <CircleQuestionMark
                                 size={24}
-                                className="inline-block ml-2 text-orange-400 align-baseline cursor-pointer hover:text-orange-500"
+                                className="absolute top-2 right-2 lg:static lg:inline-block lg:ml-2 lg:align-baseline text-orange-400 cursor-pointer hover:text-orange-500"
                                 onMouseEnter={(e) => {
                                     e.stopPropagation();
                                     e.preventDefault();

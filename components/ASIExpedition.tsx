@@ -270,7 +270,7 @@ export const ASIExpedition = () => {
                 <div className="p-8 border-b border-white/5">
                     <div className="flex flex-col md:flex-row justify-between items-start gap-4">
                         <div>
-                            <div className="flex flex-row">
+                            <div className="relative flex flex-row">
                                 <h3 className="text-3xl font-black text-white italic tracking-tight uppercase leading-tight">
                                     <Link
                                         href="https://askpolly.ai"
@@ -281,7 +281,7 @@ export const ASIExpedition = () => {
                                     </Link>
                                     <CircleQuestionMark
                                         size={24}
-                                        className="inline-block ml-2 text-indigo-400 align-baseline cursor-pointer hover:text-indigo-500"
+                                        className="absolute top-2 right-2 lg:static lg:inline-block lg:ml-2 lg:align-baseline ml-2 text-indigo-400 align-baseline cursor-pointer hover:text-indigo-500"
                                         onMouseEnter={(e) => {
                                             e.stopPropagation();
                                             e.preventDefault();

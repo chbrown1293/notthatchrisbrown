@@ -2,11 +2,11 @@ import { Flag } from "lucide-react";
 
 export const EarlyExpeditions = () => (
     <div className="space-y-8 mt-12 border-t border-white/5 pt-12">
-        <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 flex items-center gap-2 ml-4">
+        <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 flex items-center gap-2">
             <Flag size={16} /> Early Career
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pl-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white/[0.02] border border-white/5 p-6 rounded-[2rem] relative group hover:bg-white/[0.05] transition-colors">
                 <h3 className="font-black text-slate-200 uppercase text-sm tracking-tighter">
                     Alberta Counsel

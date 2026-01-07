@@ -48,7 +48,7 @@ export default function FlyGameModal({
     if (!isVisible) return null;
 
     return (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8 print:hidden">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 print:hidden">
             {/* Background Overlay */}
             <div
                 className="absolute z-[210] inset-0 bg-[#0d140d]/90 backdrop-blur-xl transition-opacity"
@@ -56,7 +56,7 @@ export default function FlyGameModal({
             />
 
             {/* Modal Container */}
-            <div className="relative w-full max-w-7xl h-full max-h-[92vh] z-[220] bg-[#0a120a] border border-lime-500/30 rounded-[2.5rem] shadow-[0_0_80px_rgba(0,0,0,0.8)] overflow-hidden animate-in fade-in zoom-in duration-300 flex flex-col">
+            <div className="relative w-full h-full z-[220] bg-[#0a120a] border border-lime-500/30 rounded-[2.5rem] shadow-[0_0_80px_rgba(0,0,0,0.8)] overflow-hidden animate-in fade-in zoom-in duration-300 flex flex-col">
                 {/* Topographic Texture */}
                 <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/topography.png')]" />
 

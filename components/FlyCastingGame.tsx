@@ -3,7 +3,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 
-// --- Types ---
 interface Point {
     x: number;
     y: number;
@@ -11,45 +10,73 @@ interface Point {
     oldY: number;
 }
 
-interface GameState {
-    power: number;
-    distance: number;
-    isCasting: boolean;
-    isMouseDown: boolean;
-    highScore: number;
-}
-
-const SEGMENT_COUNT = 20;
-const SEGMENT_DIST = 15;
-const GRAVITY = 0.4;
-const FRICTION = 0.98;
-const ROD_LENGTH = 180; // Fixed rod length
-const TARGET_ANGLE = -Math.PI / 6; // 2 o'clock
-const TOLERANCE = 1.0; // How quickly the penalty scales (1.0 is fairly strict)
+const SEGMENT_COUNT = 75;
+const SEGMENT_DIST_BASE = 6;
+const GRAVITY = 0.5;
+const FRICTION = 0.992;
+const WATER_FRICTION = 0.35;
+const ROD_LENGTH = 185;
+const MAX_DIST_FT = 300;
 
 export default function FlyCastingGame() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [game, setGame] = useState<GameState>({
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    const [game, setGame] = useState({
         power: 0,
+        potential: 5,
         distance: 0,
-        isCasting: false,
         isMouseDown: false,
+        isCasting: false,
+        showResult: false,
         highScore: 0,
     });
 
-    // Refs for physics to keep 60fps without React state lag
     const lineRef = useRef<Point[]>([]);
     const mouseRef = useRef({ x: 0, y: 0 });
-    const rodTipRef = useRef({ x: 150, y: 200 });
-    const pivotRef = useRef({ x: 150, y: 500 }); // The "hand" position
+    const rodTipRef = useRef({ x: 0, y: 0 });
+    const PIVOT = useRef({ x: 0, y: 0 });
+    const cameraRef = useRef({ zoom: 1, x: 0 });
+    const tensionRef = useRef(false);
+    const settleTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const [canvasSize, setCanvasSize] = useState({ width: 1200, height: 800 });
 
-    // Initialize Line
-    useEffect(() => {
+    const initLine = () => {
+        const w = containerRef.current?.clientWidth || 1200;
+        const h = containerRef.current?.clientHeight || 800;
+        const waterY = h - 100;
+        PIVOT.current = { x: w / 2, y: waterY - 20 };
+
+        if (settleTimerRef.current) {
+            clearTimeout(settleTimerRef.current);
+            settleTimerRef.current = null;
+        }
+
         const points: Point[] = [];
         for (let i = 0; i < SEGMENT_COUNT; i++) {
-            points.push({ x: 150, y: 300, oldX: 150, oldY: 300 });
+            points.push({
+                x: PIVOT.current.x - i * SEGMENT_DIST_BASE,
+                y: waterY,
+                oldX: PIVOT.current.x - i * SEGMENT_DIST_BASE,
+                oldY: waterY,
+            });
         }
         lineRef.current = points;
+        cameraRef.current = { zoom: 1, x: 0 };
+    };
+
+    useEffect(() => {
+        initLine();
+        const handleResize = () => {
+            if (containerRef.current) {
+                setCanvasSize({
+                    width: containerRef.current.clientWidth,
+                    height: containerRef.current.clientHeight,
+                });
+            }
+        };
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     useEffect(() => {
@@ -62,273 +89,354 @@ export default function FlyCastingGame() {
 
         const update = () => {
             const points = lineRef.current;
-            const pivot = { x: 150, y: canvas.height - 100 };
-            pivotRef.current = pivot;
+            if (!points.length) return;
 
-            // 1. Calculate Fixed Rod Tip Position based on mouse angle
-            const dx = mouseRef.current.x - pivot.x;
-            const dy = mouseRef.current.y - pivot.y;
-            const angle = Math.atan2(dy, dx);
+            const WATER_LEVEL = canvasSize.height - 100;
 
+            // 1. ROD
+            const dx = mouseRef.current.x - PIVOT.current.x;
+            const dy = mouseRef.current.y - PIVOT.current.y;
+            let angle = Math.atan2(dy, dx);
+            angle = Math.max(-Math.PI * 0.85, Math.min(-Math.PI * 0.1, angle));
             rodTipRef.current = {
-                x: pivot.x + Math.cos(angle) * ROD_LENGTH,
-                y: pivot.y + Math.sin(angle) * ROD_LENGTH,
+                x: PIVOT.current.x + Math.cos(angle) * ROD_LENGTH,
+                y: PIVOT.current.y + Math.sin(angle) * ROD_LENGTH,
             };
 
-            // 2. Verlet Integration (Physics)
+            // 2. TENSION
+            const fly = points[points.length - 1];
+            const distToTip = Math.sqrt(
+                (fly.x - rodTipRef.current.x) ** 2 +
+                    (fly.y - rodTipRef.current.y) ** 2
+            );
+            tensionRef.current =
+                distToTip > SEGMENT_COUNT * SEGMENT_DIST_BASE * 0.88;
+
+            // 3. PHYSICS
             for (let i = 0; i < points.length; i++) {
                 const p = points[i];
-
-                if (i === 0) {
-                    // Attachment point is the rod tip
+                if (i === 0 && !game.isCasting) {
                     p.x = rodTipRef.current.x;
                     p.y = rodTipRef.current.y;
                 } else {
-                    const vx = (p.x - p.oldX) * FRICTION;
-                    const vy = (p.y - p.oldY) * FRICTION;
-
+                    const onWater = p.y >= WATER_LEVEL - 1;
+                    const friction = onWater ? WATER_FRICTION : FRICTION;
+                    let vx = (p.x - p.oldX) * friction;
+                    let vy = (p.y - p.oldY) * friction;
                     p.oldX = p.x;
                     p.oldY = p.y;
                     p.x += vx;
                     p.y += vy + GRAVITY;
+                    if (p.y > WATER_LEVEL) {
+                        p.y = WATER_LEVEL;
+                        p.oldX = p.x - vx * 0.15;
+                    }
                 }
             }
 
-            // 3. Constraints
-            for (let j = 0; j < 5; j++) {
+            // 4. CAMERA
+            const flyX = points[points.length - 1].x;
+            if (game.isCasting) {
+                const span = flyX - PIVOT.current.x + 600;
+                const targetZoom = Math.max(
+                    0.06,
+                    Math.min(1, canvasSize.width / span)
+                );
+                const targetCamX =
+                    (flyX + PIVOT.current.x) / 2 - PIVOT.current.x;
+
+                cameraRef.current.zoom +=
+                    (targetZoom - cameraRef.current.zoom) * 0.04;
+                cameraRef.current.x +=
+                    (targetCamX - cameraRef.current.x) * 0.04;
+
+                // Show result trigger
+                const flyVel = Math.abs(fly.x - fly.oldX);
+                if (
+                    fly.y >= WATER_LEVEL - 1 &&
+                    flyVel < 0.05 &&
+                    !game.showResult &&
+                    settleTimerRef.current === null
+                ) {
+                    settleTimerRef.current = setTimeout(() => {
+                        setGame((prev) => ({ ...prev, showResult: true }));
+                    }, 1000);
+                }
+            }
+
+            // 5. CONSTRAINTS
+            for (let j = 0; j < 12; j++) {
                 for (let i = 0; i < points.length - 1; i++) {
                     const p1 = points[i];
                     const p2 = points[i + 1];
-                    const dx = p2.x - p1.x;
-                    const dy = p2.y - p1.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    const diff = SEGMENT_DIST - dist;
-                    const percent = diff / dist / 2;
-                    const offsetX = dx * percent;
-                    const offsetY = dy * percent;
-
-                    if (i !== 0) {
-                        p1.x -= offsetX;
-                        p1.y -= offsetY;
+                    const dist = Math.sqrt(
+                        (p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2
+                    );
+                    const diff = SEGMENT_DIST_BASE - dist;
+                    const ox = ((p2.x - p1.x) / dist) * diff * 0.5;
+                    const oy = ((p2.y - p1.y) / dist) * diff * 0.5;
+                    if (i === 0 && !game.isCasting) {
+                        p2.x += ox * 2;
+                        p2.y += oy * 2;
+                    } else {
+                        p1.x -= ox;
+                        p1.y -= oy;
+                        p2.x += ox;
+                        p2.y += oy;
                     }
-                    p2.x += offsetX;
-                    p2.y += offsetY;
                 }
             }
 
-            // 4. Drawing
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // 6. RENDER
+            ctx.save();
+            ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
+            ctx.translate(canvasSize.width / 2, canvasSize.height - 100);
+            ctx.scale(cameraRef.current.zoom, cameraRef.current.zoom);
+            ctx.translate(-PIVOT.current.x - cameraRef.current.x, 0);
 
             // Water
-            ctx.fillStyle = "#1e40af";
-            ctx.fillRect(0, canvas.height - 100, canvas.width, 100);
+            ctx.fillStyle = "#0c4a6e";
+            ctx.fillRect(PIVOT.current.x - 4000, 0, 40000, 1000);
 
-            // Fly Line
+            // Markers
+            ctx.fillStyle = "rgba(255,255,255,0.2)";
+            ctx.font = `bold ${22 / cameraRef.current.zoom}px sans-serif`;
+            for (let f = 50; f <= MAX_DIST_FT; f += 50) {
+                const xPos = PIVOT.current.x + f * 36;
+                ctx.fillRect(xPos, -25, 2, 50);
+                ctx.fillText(`${f}ft`, xPos + 10, -35);
+            }
+
+            // DRAW RUNNING LINE (Matched to Fly Line)
+            if (game.isCasting) {
+                const startX = rodTipRef.current.x;
+                const startY = rodTipRef.current.y - (canvasSize.height - 100);
+                const endX = points[0].x;
+                const endY = points[0].y - (canvasSize.height - 100);
+
+                // Sag calculation: ensure the control point never goes below the water (0)
+                const midX = (startX + endX) / 2;
+                const sagAmount = Math.abs(endX - startX) * 0.15;
+                const midY = Math.min(Math.max(startY, endY) + sagAmount, 0);
+
+                ctx.beginPath();
+                ctx.lineWidth = 3 / cameraRef.current.zoom;
+                ctx.strokeStyle = "#fbbf24";
+                ctx.moveTo(startX, startY);
+                ctx.quadraticCurveTo(midX, midY, endX, endY);
+                ctx.stroke();
+            }
+
+            // DRAW FLY LINE
             ctx.beginPath();
-            ctx.lineWidth = 2.5;
-            ctx.strokeStyle = "#fbbf24";
-            ctx.lineJoin = "round";
-            ctx.moveTo(points[0].x, points[0].y);
+            ctx.lineWidth = 3 / cameraRef.current.zoom;
+            ctx.strokeStyle =
+                tensionRef.current && game.isMouseDown ? "#fff" : "#fbbf24";
+            ctx.moveTo(points[0].x, points[0].y - (canvasSize.height - 100));
             for (let i = 1; i < points.length; i++) {
-                ctx.lineTo(points[i].x, points[i].y);
+                ctx.lineTo(
+                    points[i].x,
+                    points[i].y - (canvasSize.height - 100)
+                );
             }
             ctx.stroke();
 
-            // Rod (Fixed Length)
+            // Fly & Rod
+            ctx.fillStyle = "#f43f5e";
             ctx.beginPath();
-            ctx.lineWidth = 5;
-            ctx.strokeStyle = "#334155";
-            ctx.lineCap = "round";
-            ctx.moveTo(pivot.x, pivot.y);
-            ctx.lineTo(rodTipRef.current.x, rodTipRef.current.y);
-            ctx.stroke();
-
-            // Rod Handle
-            ctx.beginPath();
-            ctx.arc(pivot.x, pivot.y, 8, 0, Math.PI * 2);
-            ctx.fillStyle = "#000";
+            ctx.arc(
+                fly.x,
+                fly.y - (canvasSize.height - 100),
+                5 / cameraRef.current.zoom,
+                0,
+                Math.PI * 2
+            );
             ctx.fill();
 
+            ctx.beginPath();
+            ctx.lineWidth = 8 / cameraRef.current.zoom;
+            ctx.strokeStyle = "#0f172a";
+            ctx.lineCap = "round";
+            ctx.moveTo(PIVOT.current.x, -20);
+            ctx.lineTo(
+                PIVOT.current.x + (rodTipRef.current.x - PIVOT.current.x),
+                rodTipRef.current.y - (canvasSize.height - 100)
+            );
+            ctx.stroke();
+
+            ctx.restore();
             animationFrameId = requestAnimationFrame(update);
         };
 
         update();
         return () => cancelAnimationFrame(animationFrameId);
-    }, []);
-
-    const handleMouseDown = () => {
-        setGame((prev) => ({ ...prev, isMouseDown: true, power: 0 }));
-    };
+    }, [canvasSize, game]);
 
     const handleMouseMove = (e: React.MouseEvent) => {
+        if (!game.isMouseDown || game.isCasting) return;
         const rect = canvasRef.current?.getBoundingClientRect();
         if (!rect) return;
+        const worldX =
+            (e.clientX - rect.left - canvasSize.width / 2) /
+                cameraRef.current.zoom +
+            PIVOT.current.x +
+            cameraRef.current.x;
+        const moveX = worldX - mouseRef.current.x;
+        mouseRef.current.x = worldX;
 
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        // 1. Determine direction BEFORE updating the ref
-        const movementX = x - mouseRef.current.x;
-
-        // IMPORTANT: Update the ref so the rod actually moves!
-        mouseRef.current = { x, y };
-
-        const isMovingForward = movementX > 2; // Threshold to prevent jitter
-
-        // 2. Check line straightness (Tension)
-        const points = lineRef.current;
-        if (points.length === 0) return;
-
-        const fly = points[points.length - 1];
-        const rodTip = rodTipRef.current;
-
-        // Calculate distance from tip to fly
-        const distToFly = Math.sqrt(
-            (fly.x - rodTip.x) ** 2 + (fly.y - rodTip.y) ** 2
-        );
-        const totalLength = SEGMENT_COUNT * SEGMENT_DIST;
-
-        // Is the fly behind the rod tip? (Check if fly.x is less than tip.x)
-        const isLineBehind = fly.x < rodTip.x;
-
-        // 3. Logic for "Loading" the cast
-        if (game.isMouseDown && !game.isCasting) {
-            // Power Stroke: Moving forward + line is stretched out behind you
-            if (
-                isMovingForward &&
-                isLineBehind &&
-                distToFly > totalLength * 0.7
-            ) {
-                setGame((prev) => ({
-                    ...prev,
-                    power: Math.min(
-                        prev.power + Math.abs(movementX) * 0.4, // Increased sensitivity
-                        100
-                    ),
-                }));
+        if (Math.abs(moveX) > 1) {
+            if (tensionRef.current) {
+                if (moveX < 0) {
+                    // Backcast: harder to load
+                    setGame((prev) => ({
+                        ...prev,
+                        potential: Math.min(
+                            prev.potential + Math.abs(moveX) * 0.04,
+                            100
+                        ),
+                    }));
+                } else {
+                    // Forward cast
+                    setGame((prev) => ({
+                        ...prev,
+                        power: Math.min(
+                            prev.power + moveX * 1.4,
+                            prev.potential * 15
+                        ),
+                    }));
+                }
             } else {
-                // Decay power slowly if not in a perfect power stroke
+                // High penalty for poor rhythm
                 setGame((prev) => ({
                     ...prev,
-                    power: prev.power * 0.98,
+                    potential: prev.potential * 0.9,
+                    power: prev.power * 0.75,
                 }));
             }
         }
     };
 
-    const handleMouseUp = () => {
+    const executeCast = () => {
         if (!game.isMouseDown) return;
+        const power = Math.max(10, game.power);
+        const shootForce = power / 9;
 
-        // 1. Calculate the angle of the rod at release
-        const dx = mouseRef.current.x - pivotRef.current.x;
-        const dy = mouseRef.current.y - pivotRef.current.y;
-        const releaseAngle = Math.atan2(dy, dx);
+        lineRef.current.forEach((p, i) => {
+            const boost = shootForce * (1.4 - i / SEGMENT_COUNT);
+            p.oldX = p.x - boost;
+            p.oldY = p.y + shootForce / 4;
+        });
 
-        // 2. Calculate accuracy (1.0 is perfect, 0.0 is completely off)
-        // We compare releaseAngle to TARGET_ANGLE (-0.52 radians)
-        const angleDiff = Math.abs(releaseAngle - TARGET_ANGLE);
-        const accuracy = Math.max(0, 1 - angleDiff * TOLERANCE);
+        // HARDER DIFFICULTY: Exponential drop-off
+        const distRatio = Math.pow(power / 1500, 3.0);
+        const dist = Math.max(
+            5,
+            Math.min(MAX_DIST_FT, Math.floor(distRatio * MAX_DIST_FT * 8.0))
+        );
 
-        if (game.power > 15) {
-            // 3. Apply accuracy to the final distance
-            const finalDist = Math.floor(game.power * 2.8 * accuracy);
-
-            setGame((prev) => ({
-                ...prev,
-                isMouseDown: false,
-                isCasting: true,
-                distance: finalDist,
-                highScore: Math.max(prev.highScore, finalDist),
-            }));
-
-            setTimeout(() => {
-                setGame((prev) => ({ ...prev, isCasting: false, power: 0 }));
-            }, 1500);
-        } else {
-            setGame((prev) => ({ ...prev, isMouseDown: false, power: 0 }));
-        }
+        setGame((prev) => ({
+            ...prev,
+            isMouseDown: false,
+            isCasting: true,
+            distance: dist,
+            highScore: Math.max(prev.highScore, dist),
+        }));
     };
 
     return (
         <div
-            className="relative w-full h-full bg-sky-300 rounded-xl overflow-hidden cursor-crosshair select-none shadow-2xl border-4 border-slate-700"
-            onMouseLeave={handleMouseUp}
+            ref={containerRef}
+            className="relative w-full h-full bg-slate-950 overflow-hidden cursor-crosshair font-sans"
         >
-            {/* UI Overlay */}
-            <div className="absolute top-6 left-6 z-10 pointer-events-none">
-                <h2 className="text-2xl font-black text-slate-800 uppercase italic tracking-tighter">
-                    Tension Cast
-                </h2>
-                <div className="mt-2 w-48 h-4 bg-slate-800/20 rounded-full overflow-hidden border border-white/50 backdrop-blur-sm">
-                    <motion.div
-                        className="h-full bg-orange-500"
-                        animate={{ width: `${game.power}%` }}
-                        transition={{
-                            type: "spring",
-                            bounce: 0,
-                            duration: 0.1,
-                        }}
-                    />
+            <div className="absolute top-10 left-10 z-10 pointer-events-none opacity-90">
+                <div className="flex flex-col gap-1">
+                    <span className="text-sky-400 text-[9px] font-black uppercase tracking-[0.2em] mb-1">
+                        Rod Potential
+                    </span>
+                    <div className="w-40 h-1 bg-white/10 rounded-full overflow-hidden">
+                        <motion.div
+                            className="h-full bg-sky-400"
+                            animate={{ width: `${game.potential}%` }}
+                        />
+                    </div>
+                    <div className="w-64 h-3 bg-white/5 rounded-full overflow-hidden mt-1 border border-white/10">
+                        <motion.div
+                            className="h-full bg-orange-500"
+                            animate={{ width: `${(game.power / 1500) * 100}%` }}
+                        />
+                    </div>
                 </div>
-                <p className="text-[10px] font-bold text-slate-700 mt-1 uppercase tracking-widest">
-                    {game.isMouseDown
-                        ? "Charging Power..."
-                        : "Hold Click to Begin"}
-                </p>
             </div>
 
-            <div className="absolute top-6 right-6 text-right z-10">
-                <p className="text-xs font-bold text-slate-700 uppercase">PB</p>
-                <p className="text-3xl font-black text-slate-900 leading-none">
+            <div className="absolute top-10 right-10 text-right opacity-30">
+                <p className="text-8xl font-black text-white italic tracking-tighter leading-none">
                     {game.highScore}
-                    <span className="text-sm">ft</span>
+                </p>
+                <p className="text-sky-500 font-bold uppercase text-[10px] tracking-widest leading-none mt-2">
+                    PB Distance
                 </p>
             </div>
 
-            {/* Result Popup */}
             <AnimatePresence>
-                {game.isCasting && (
+                {game.showResult && (
                     <motion.div
-                        initial={{ scale: 0.5, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 1.5, opacity: 0 }}
-                        className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none"
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        key="result-popup"
+                        className="absolute bottom-12 left-1/2 -translate-x-1/2 z-30 w-full max-w-sm px-6"
                     >
-                        <div className="bg-white px-10 py-6 rounded-3xl shadow-2xl border-b-8 border-orange-600 text-center">
-                            <p className="text-orange-500 font-black uppercase text-xs tracking-widest">
-                                Line Out!
-                            </p>
-                            <h3 className="text-7xl font-black text-slate-900 italic">
-                                {game.distance}ft
-                            </h3>
+                        <div className="bg-slate-900/95 backdrop-blur-xl border border-white/10 p-6 rounded-3xl flex items-center justify-between shadow-2xl">
+                            <div>
+                                <div className="text-sky-400 font-bold uppercase text-[9px] tracking-[0.3em] mb-1">
+                                    Cast Distance
+                                </div>
+                                <div className="text-5xl font-black text-white italic">
+                                    {game.distance}
+                                    <span className="text-sm ml-1 text-white/40 italic">
+                                        ft
+                                    </span>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => {
+                                    setGame((prev) => ({
+                                        ...prev,
+                                        showResult: false,
+                                        isCasting: false,
+                                        potential: 5,
+                                        power: 0,
+                                    }));
+                                    initLine();
+                                }}
+                                className="bg-white text-slate-950 px-6 py-4 rounded-2xl font-black uppercase text-[10px] hover:bg-sky-500 hover:text-white transition-all active:scale-95"
+                            >
+                                Reset
+                            </button>
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            {/* Instructions */}
-            {!game.isMouseDown && !game.isCasting && (
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="text-center"
-                    >
-                        <p className="text-slate-800 font-black text-xl uppercase italic bg-white/30 px-4 py-2 rounded-full backdrop-blur-md">
-                            Hold Left Click & Shake to Load
-                        </p>
-                    </motion.div>
-                </div>
-            )}
-
             <canvas
                 ref={canvasRef}
-                width={1200}
-                height={600}
-                onMouseDown={handleMouseDown}
+                width={canvasSize.width}
+                height={canvasSize.height}
+                onMouseDown={() =>
+                    !game.isCasting &&
+                    setGame((prev) => ({ ...prev, isMouseDown: true }))
+                }
                 onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
-                className="w-full h-full"
+                onMouseUp={executeCast}
+                onMouseLeave={() =>
+                    game.isMouseDown &&
+                    !game.isCasting &&
+                    setGame((prev) => ({
+                        ...prev,
+                        isMouseDown: false,
+                        power: 0,
+                    }))
+                }
+                className="w-full h-full block"
             />
         </div>
     );

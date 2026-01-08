@@ -1,12 +1,11 @@
 import {
     Briefcase,
     Compass,
-    Fish,
     Github,
     Linkedin,
     Mail,
     MapPin, // Added for tab icon
-    User,
+    User
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -224,7 +223,7 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                             </div>
                         </div>
 
-                        <button
+                        {/* <button
                             onClick={() => {
                                 setFlyGameOpen(true);
                             }}
@@ -236,7 +235,7 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                             <span className="text-[10px] font-mono uppercase tracking-widest  ">
                                 Launch fly casting Simulator
                             </span>
-                        </button>
+                        </button> */}
                     </div>
                 </div>
             </div>

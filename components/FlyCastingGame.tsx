@@ -3,6 +3,20 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 
+const DIFF = {
+    TENSION_THRESHOLD: 0.93,
+    POTENTIAL_GAIN: 0.01,
+    POWER_GAIN: 1.2,
+    SLACK_PENALTY: 0.8,
+    POWER_DECAY: 0.65,
+    DISTANCE_EXPONENT: 3.0,
+    DISTANCE_MULT: 8.0,
+    MAX_POWER_CAP: 1500,
+    GRAVITY: 0.3,
+    AIR_FRICTION: 0.992,
+    WATER_FRICTION: 0.15,
+};
+
 interface Point {
     x: number;
     y: number;
@@ -12,9 +26,6 @@ interface Point {
 
 const SEGMENT_COUNT = 75;
 const SEGMENT_DIST_BASE = 6;
-const GRAVITY = 0.5;
-const FRICTION = 0.992;
-const WATER_FRICTION = 0.35;
 const ROD_LENGTH = 185;
 const MAX_DIST_FT = 300;
 
@@ -93,7 +104,6 @@ export default function FlyCastingGame() {
 
             const WATER_LEVEL = canvasSize.height - 100;
 
-            // 1. ROD
             const dx = mouseRef.current.x - PIVOT.current.x;
             const dy = mouseRef.current.y - PIVOT.current.y;
             let angle = Math.atan2(dy, dx);
@@ -103,16 +113,15 @@ export default function FlyCastingGame() {
                 y: PIVOT.current.y + Math.sin(angle) * ROD_LENGTH,
             };
 
-            // 2. TENSION
             const fly = points[points.length - 1];
             const distToTip = Math.sqrt(
                 (fly.x - rodTipRef.current.x) ** 2 +
                     (fly.y - rodTipRef.current.y) ** 2
             );
             tensionRef.current =
-                distToTip > SEGMENT_COUNT * SEGMENT_DIST_BASE * 0.88;
+                distToTip >
+                SEGMENT_COUNT * SEGMENT_DIST_BASE * DIFF.TENSION_THRESHOLD;
 
-            // 3. PHYSICS
             for (let i = 0; i < points.length; i++) {
                 const p = points[i];
                 if (i === 0 && !game.isCasting) {
@@ -120,13 +129,15 @@ export default function FlyCastingGame() {
                     p.y = rodTipRef.current.y;
                 } else {
                     const onWater = p.y >= WATER_LEVEL - 1;
-                    const friction = onWater ? WATER_FRICTION : FRICTION;
+                    const friction = onWater
+                        ? DIFF.WATER_FRICTION
+                        : DIFF.AIR_FRICTION;
                     let vx = (p.x - p.oldX) * friction;
                     let vy = (p.y - p.oldY) * friction;
                     p.oldX = p.x;
                     p.oldY = p.y;
                     p.x += vx;
-                    p.y += vy + GRAVITY;
+                    p.y += vy + DIFF.GRAVITY;
                     if (p.y > WATER_LEVEL) {
                         p.y = WATER_LEVEL;
                         p.oldX = p.x - vx * 0.15;
@@ -134,7 +145,6 @@ export default function FlyCastingGame() {
                 }
             }
 
-            // 4. CAMERA
             const flyX = points[points.length - 1].x;
             if (game.isCasting) {
                 const span = flyX - PIVOT.current.x + 600;
@@ -150,7 +160,6 @@ export default function FlyCastingGame() {
                 cameraRef.current.x +=
                     (targetCamX - cameraRef.current.x) * 0.04;
 
-                // Show result trigger
                 const flyVel = Math.abs(fly.x - fly.oldX);
                 if (
                     fly.y >= WATER_LEVEL - 1 &&
@@ -164,7 +173,6 @@ export default function FlyCastingGame() {
                 }
             }
 
-            // 5. CONSTRAINTS
             for (let j = 0; j < 12; j++) {
                 for (let i = 0; i < points.length - 1; i++) {
                     const p1 = points[i];
@@ -187,18 +195,15 @@ export default function FlyCastingGame() {
                 }
             }
 
-            // 6. RENDER
             ctx.save();
             ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
             ctx.translate(canvasSize.width / 2, canvasSize.height - 100);
             ctx.scale(cameraRef.current.zoom, cameraRef.current.zoom);
             ctx.translate(-PIVOT.current.x - cameraRef.current.x, 0);
 
-            // Water
             ctx.fillStyle = "#0c4a6e";
             ctx.fillRect(PIVOT.current.x - 4000, 0, 40000, 1000);
 
-            // Markers
             ctx.fillStyle = "rgba(255,255,255,0.2)";
             ctx.font = `bold ${22 / cameraRef.current.zoom}px sans-serif`;
             for (let f = 50; f <= MAX_DIST_FT; f += 50) {
@@ -207,14 +212,11 @@ export default function FlyCastingGame() {
                 ctx.fillText(`${f}ft`, xPos + 10, -35);
             }
 
-            // DRAW RUNNING LINE (Matched to Fly Line)
             if (game.isCasting) {
                 const startX = rodTipRef.current.x;
                 const startY = rodTipRef.current.y - (canvasSize.height - 100);
                 const endX = points[0].x;
                 const endY = points[0].y - (canvasSize.height - 100);
-
-                // Sag calculation: ensure the control point never goes below the water (0)
                 const midX = (startX + endX) / 2;
                 const sagAmount = Math.abs(endX - startX) * 0.15;
                 const midY = Math.min(Math.max(startY, endY) + sagAmount, 0);
@@ -227,7 +229,6 @@ export default function FlyCastingGame() {
                 ctx.stroke();
             }
 
-            // DRAW FLY LINE
             ctx.beginPath();
             ctx.lineWidth = 3 / cameraRef.current.zoom;
             ctx.strokeStyle =
@@ -241,7 +242,6 @@ export default function FlyCastingGame() {
             }
             ctx.stroke();
 
-            // Fly & Rod
             ctx.fillStyle = "#f43f5e";
             ctx.beginPath();
             ctx.arc(
@@ -272,7 +272,8 @@ export default function FlyCastingGame() {
         return () => cancelAnimationFrame(animationFrameId);
     }, [canvasSize, game]);
 
-    const handleMouseMove = (e: React.MouseEvent) => {
+    // TYPE UPDATED TO PointerEvent
+    const handleMouseMove = (e: React.PointerEvent) => {
         if (!game.isMouseDown || game.isCasting) return;
         const rect = canvasRef.current?.getBoundingClientRect();
         if (!rect) return;
@@ -287,30 +288,28 @@ export default function FlyCastingGame() {
         if (Math.abs(moveX) > 1) {
             if (tensionRef.current) {
                 if (moveX < 0) {
-                    // Backcast: harder to load
                     setGame((prev) => ({
                         ...prev,
                         potential: Math.min(
-                            prev.potential + Math.abs(moveX) * 0.04,
+                            prev.potential +
+                                Math.abs(moveX) * DIFF.POTENTIAL_GAIN,
                             100
                         ),
                     }));
                 } else {
-                    // Forward cast
                     setGame((prev) => ({
                         ...prev,
                         power: Math.min(
-                            prev.power + moveX * 1.4,
+                            prev.power + moveX * DIFF.POWER_GAIN,
                             prev.potential * 15
                         ),
                     }));
                 }
             } else {
-                // High penalty for poor rhythm
                 setGame((prev) => ({
                     ...prev,
-                    potential: prev.potential * 0.9,
-                    power: prev.power * 0.75,
+                    potential: prev.potential * DIFF.SLACK_PENALTY,
+                    power: prev.power * DIFF.POWER_DECAY,
                 }));
             }
         }
@@ -327,11 +326,16 @@ export default function FlyCastingGame() {
             p.oldY = p.y + shootForce / 4;
         });
 
-        // HARDER DIFFICULTY: Exponential drop-off
-        const distRatio = Math.pow(power / 1500, 3.0);
+        const distRatio = Math.pow(
+            power / DIFF.MAX_POWER_CAP,
+            DIFF.DISTANCE_EXPONENT
+        );
         const dist = Math.max(
             5,
-            Math.min(MAX_DIST_FT, Math.floor(distRatio * MAX_DIST_FT * 8.0))
+            Math.min(
+                MAX_DIST_FT,
+                Math.floor(distRatio * MAX_DIST_FT * DIFF.DISTANCE_MULT)
+            )
         );
 
         setGame((prev) => ({
@@ -346,7 +350,8 @@ export default function FlyCastingGame() {
     return (
         <div
             ref={containerRef}
-            className="relative w-full h-full bg-slate-950 overflow-hidden cursor-crosshair font-sans"
+            // touch-none added to prevent scrolling during play
+            className="relative w-full h-full bg-slate-950 overflow-hidden cursor-crosshair font-sans touch-none"
         >
             <div className="absolute top-10 left-10 z-10 pointer-events-none opacity-90">
                 <div className="flex flex-col gap-1">
@@ -357,12 +362,6 @@ export default function FlyCastingGame() {
                         <motion.div
                             className="h-full bg-sky-400"
                             animate={{ width: `${game.potential}%` }}
-                        />
-                    </div>
-                    <div className="w-64 h-3 bg-white/5 rounded-full overflow-hidden mt-1 border border-white/10">
-                        <motion.div
-                            className="h-full bg-orange-500"
-                            animate={{ width: `${(game.power / 1500) * 100}%` }}
                         />
                     </div>
                 </div>
@@ -421,13 +420,14 @@ export default function FlyCastingGame() {
                 ref={canvasRef}
                 width={canvasSize.width}
                 height={canvasSize.height}
-                onMouseDown={() =>
+                // Updated to Pointer events for unified Mouse/Touch support
+                onPointerDown={() =>
                     !game.isCasting &&
                     setGame((prev) => ({ ...prev, isMouseDown: true }))
                 }
-                onMouseMove={handleMouseMove}
-                onMouseUp={executeCast}
-                onMouseLeave={() =>
+                onPointerMove={handleMouseMove}
+                onPointerUp={executeCast}
+                onPointerLeave={() =>
                     game.isMouseDown &&
                     !game.isCasting &&
                     setGame((prev) => ({

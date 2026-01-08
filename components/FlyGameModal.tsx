@@ -70,8 +70,12 @@ export default function FlyGameModal({
                             <h2 className="text-[12px] font-black uppercase tracking-[0.4em] text-lime-400">
                                 {title}
                             </h2>
-                            <p className="text-[9px] text-white/30 uppercase tracking-widest mt-1">
-                                Tactical Angling Module // 2.0.26
+                            <p className="text-xs text-white/50  tracking-wide mt-1">
+                                See how well you understand fly casting physics
+                                - build your cast potential by executing well
+                                timed backcasts! Click and hold the rod to start
+                                a cast, then release at the optimal time to
+                                maximize distance.
                             </p>
                         </div>
                     </div>

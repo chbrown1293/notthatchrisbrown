@@ -228,13 +228,13 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                             onClick={() => {
                                 setFlyGameOpen(true);
                             }}
-                            className="bg-[#0f1a0f] hover:bg-[#162116] border border-white/5 p-6 rounded-[2.5rem] text-slate-500 flex items-center justify-between cursor-pointer hover:text-lime-400"
+                            className="bg-[#0f1a0f] hover:bg-[#162116] border border-white/5 p-6 rounded-[2.5rem] text-slate-500 flex items-center gap-2 cursor-pointer hover:text-lime-400"
                         >
                             <div className="flex gap-4">
                                 <Fish size={20} />
                             </div>
                             <span className="text-[10px] font-mono uppercase tracking-widest  ">
-                                Launch fly casting competition
+                                Launch fly casting Simulator
                             </span>
                         </button>
                     </div>

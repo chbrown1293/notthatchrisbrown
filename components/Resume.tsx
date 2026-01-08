@@ -5,9 +5,8 @@ import {
     Github,
     Linkedin,
     Mail,
-    MapPin,
-    Mountain, // Added for tab icon
-    User, // Added for tab icon
+    MapPin, // Added for tab icon
+    User,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +14,8 @@ import { forwardRef, useState } from "react"; // Added useState
 import { ASIExpedition } from "./ASIExpedition";
 import { EarlyExpeditions } from "./EarlyExpeditions";
 import { EducationBasecamp } from "./EducationBasecamp";
+import FlyCastingGame from "./FlyCastingGame";
+import FlyGameModal from "./FlyGameModal";
 import { HackleThreadsExpedition } from "./HackleThreadsExpedition";
 import { Identity } from "./Identity";
 import { TappCarExpedition } from "./TappCarExpedition";
@@ -25,11 +26,21 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
         "experience"
     );
 
+    const [flyGameOpen, setFlyGameOpen] = useState(false);
+
     return (
         <div
             ref={ref}
             className="min-h-screen bg-[#142114] text-slate-100 font-sans selection:bg-lime-500 selection:text-black"
         >
+            {flyGameOpen && (
+                <FlyGameModal
+                    onClose={() => setFlyGameOpen(false)}
+                    isVisible={flyGameOpen}
+                >
+                    <FlyCastingGame />
+                </FlyGameModal>
+            )}
             <div className="relative h-64 md:h-80 w-full overflow-hidden">
                 <Image
                     src="/golden.png"
@@ -213,18 +224,19 @@ export const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                             </div>
                         </div>
 
-                        <div className="bg-[#0f1a0f] border border-white/5 p-6 rounded-[2.5rem] flex items-center justify-between">
+                        <button
+                            onClick={() => {
+                                setFlyGameOpen(true);
+                            }}
+                            className="bg-[#0f1a0f] hover:bg-[#162116] border border-white/5 p-6 rounded-[2.5rem] text-slate-500 flex items-center gap-2 cursor-pointer hover:text-lime-400"
+                        >
                             <div className="flex gap-4">
-                                <Fish className="text-slate-500" size={20} />
-                                <Mountain
-                                    className="text-slate-500"
-                                    size={20}
-                                />
+                                <Fish size={20} />
                             </div>
-                            <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">
-                                BC Interior
+                            <span className="text-[10px] font-mono uppercase tracking-widest  ">
+                                Launch fly casting Simulator
                             </span>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </div>

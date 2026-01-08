@@ -1,5 +1,4 @@
 "use client";
-import FlyCastingGame from "@/components/FlyCastingGame";
 import { Resume } from "@/components/Resume";
 import { Download } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -48,7 +47,6 @@ export default function ResumePage() {
             )}
 
             <Resume ref={componentRef} />
-            <FlyCastingGame />
         </main>
     );
 }

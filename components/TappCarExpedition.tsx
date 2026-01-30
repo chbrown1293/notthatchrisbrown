@@ -65,7 +65,7 @@ export const TappCarExpedition = () => {
                             </Link>
                             <CircleQuestionMark
                                 size={24}
-                                className="absolute top-2 right-2 lg:static lg:inline-block lg:ml-2 lg:align-baseline text-orange-400 cursor-pointer hover:text-orange-500"
+                                className="print:hidden absolute top-2 right-2 lg:static lg:inline-block lg:ml-2 lg:align-baseline text-orange-400 cursor-pointer hover:text-orange-500"
                                 onMouseEnter={(e) => {
                                     e.stopPropagation();
                                     e.preventDefault();

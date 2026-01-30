@@ -90,7 +90,7 @@ export const HackleThreadsExpedition = () => {
                                     </Link>
                                     <CircleQuestionMark
                                         size={24}
-                                        className="absolute top-2 right-2 lg:static lg:inline-block lg:ml-2 lg:align-baseline ml-2 text-lime-400 align-baseline cursor-pointer hover:text-lime-500"
+                                        className="print:hidden absolute top-2 right-2 lg:static lg:inline-block lg:ml-2 lg:align-baseline ml-2 text-lime-400 align-baseline cursor-pointer hover:text-lime-500"
                                         onMouseEnter={(e) => {
                                             e.stopPropagation();
                                             e.preventDefault();

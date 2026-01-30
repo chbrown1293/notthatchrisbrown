@@ -281,7 +281,7 @@ export const ASIExpedition = () => {
                                     </Link>
                                     <CircleQuestionMark
                                         size={24}
-                                        className="absolute top-2 right-2 lg:static lg:inline-block lg:ml-2 lg:align-baseline ml-2 text-indigo-400 align-baseline cursor-pointer hover:text-indigo-500"
+                                        className="print:hidden absolute top-2 right-2 lg:static lg:inline-block lg:ml-2 lg:align-baseline ml-2 text-indigo-400 align-baseline cursor-pointer hover:text-indigo-500"
                                         onMouseEnter={(e) => {
                                             e.stopPropagation();
                                             e.preventDefault();
@@ -302,7 +302,7 @@ export const ASIExpedition = () => {
                         <Link
                             href="https://askpolly.ai"
                             target="_blank"
-                            className="hidden lg:block"
+                            className="hidden lg:block print:inline-block"
                         >
                             {ASILogo}
                         </Link>
@@ -371,7 +371,7 @@ export const ASIExpedition = () => {
                                                                 <span className="mt-1.5 h-1 w-1 rounded-full bg-indigo-500/50 shrink-0" />
                                                                 {bullet}
                                                             </li>
-                                                        )
+                                                        ),
                                                     )}
                                                 </ul>
                                             </div>

@@ -56,8 +56,9 @@ export const HackleThreadsExpedition = () => {
                         for geospatial queries, and MapLibre for interactive
                         mapping. The map features server-side cluster rendering
                         to efficiently on all devices. I'm continuously working
-                        on new features, including mobile apps using React
-                        Native + Expo and integrating with my Next.js backend.
+                        on new features, recently launched iOS and Android
+                        mobile apps using React Native + Expo and integrating
+                        with my Next.js backend.
                     </p>
                     <p className="text-sm text-gray-300 mt-4">
                         Currently the platform has over 200 patterns shared by
@@ -73,7 +74,7 @@ export const HackleThreadsExpedition = () => {
 
             <div className="absolute left-4 top-8 bottom-[-48px] w-[2px] bg-gradient-to-b from-lime-500/50 to-transparent"></div>
 
-            <div className="bg-[#162616] border border-lime-900/40 rounded-[3rem] p-8 hover:border-lime-500/50 transition-all shadow-2xl relative overflow-hidden">
+            <div className="bg-[#162616] border border-lime-900/40 rounded-[3rem] p-8 hover:border-lime-500/50 transition-all shadow-2xl relative overflow-hidden print:overflow-visible">
                 <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/topography.png')]"></div>
 
                 <div className="relative z-10">
@@ -161,6 +162,16 @@ export const HackleThreadsExpedition = () => {
                                 deployment.
                             </p>
                         </div>
+                        <div className="space-y-4">
+                            <div className="flex items-center gap-2 text-lime-500 font-black text-[10px] uppercase tracking-widest">
+                                <Smartphone size={14} /> Native Apps
+                            </div>
+                            <p className="text-sm text-slate-300 leading-relaxed">
+                                Launched iOS and Android apps using React Native
+                                + Expo, integrating with Next.js backend APIs
+                                for seamless user experience across platforms.
+                            </p>
+                        </div>
                     </div>
 
                     <div className="flex flex-wrap gap-2 mb-8">
@@ -171,6 +182,8 @@ export const HackleThreadsExpedition = () => {
                             "Tailwind CSS",
                             "Geospatial Search",
                             "Clustering",
+                            "React Native",
+                            "Expo",
                         ].map((s) => (
                             <span
                                 key={s}
@@ -179,24 +192,6 @@ export const HackleThreadsExpedition = () => {
                                 {s}
                             </span>
                         ))}
-                    </div>
-
-                    <div className="mt-4 pt-6 border-t border-white/5 flex items-center gap-3">
-                        <div className="p-2 bg-orange-500/10 rounded-xl border border-orange-500/20">
-                            <Smartphone
-                                className="text-orange-400 animate-pulse"
-                                size={16}
-                            />
-                        </div>
-                        <div>
-                            <p className="text-[10px] font-black text-orange-400 uppercase tracking-widest">
-                                In Development
-                            </p>
-                            <p className="text-[11px] text-slate-500">
-                                Cross-platform iOS and Android native apps using
-                                React Native + Expo.
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>

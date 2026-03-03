@@ -14,11 +14,15 @@ import { useState } from "react";
 import Modal from "./Modal";
 
 export const ASIExpedition = () => {
-    const [expandedRole, setExpandedRole] = useState<string | null>(null);
+    const [expandedRoles, setExpandedRoles] = useState<Set<string>>(new Set());
     const [modalVisible, setModalVisible] = useState(false);
 
     const toggleRole = (role: string) => {
-        setExpandedRole(expandedRole === role ? null : role);
+        setExpandedRoles((prev) => {
+            const next = new Set(prev);
+            next.has(role) ? next.delete(role) : next.add(role);
+            return next;
+        });
     };
 
     const roles = [
@@ -281,7 +285,7 @@ export const ASIExpedition = () => {
                                     </Link>
                                     <CircleQuestionMark
                                         size={24}
-                                        className="print:hidden absolute top-2 right-2 lg:static lg:inline-block lg:ml-2 lg:align-baseline ml-2 text-indigo-400 align-baseline cursor-pointer hover:text-indigo-500"
+                                        className="hide-in-export print:hidden absolute top-2 right-2 lg:static lg:inline-block lg:ml-2 lg:align-baseline ml-2 text-indigo-400 align-baseline cursor-pointer hover:text-indigo-500"
                                         onMouseEnter={(e) => {
                                             e.stopPropagation();
                                             e.preventDefault();
@@ -320,7 +324,7 @@ export const ASIExpedition = () => {
                                 <div>
                                     <h4
                                         className={`font-black uppercase tracking-widest text-sm transition-colors ${
-                                            expandedRole === role.id
+                                            expandedRoles.has(role.id)
                                                 ? "text-indigo-400"
                                                 : "text-slate-200"
                                         }`}
@@ -333,7 +337,7 @@ export const ASIExpedition = () => {
                                 </div>
                                 <div
                                     className={`transition-transform duration-300 ${
-                                        expandedRole === role.id
+                                        expandedRoles.has(role.id)
                                             ? "rotate-180 text-indigo-400"
                                             : "text-slate-600"
                                     }`}
@@ -345,7 +349,7 @@ export const ASIExpedition = () => {
                             {/* Expandable Content Area */}
                             <div
                                 className={`grid transition-all duration-300 ease-in-out print:grid-rows-[1fr] print:opacity-100 ${
-                                    expandedRole === role.id
+                                    expandedRoles.has(role.id)
                                         ? "grid-rows-[1fr] opacity-100 mt-2"
                                         : "grid-rows-[0fr] opacity-0"
                                 }`}

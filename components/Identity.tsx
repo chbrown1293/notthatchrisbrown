@@ -19,7 +19,7 @@ export const Identity = () => (
             </p>
 
             <div className="pt-4 border-t border-white/5 space-y-3">
-                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                <p className="text-[0.625rem] font-black text-slate-500 uppercase tracking-widest">
                     Non-Tech Interests
                 </p>
 

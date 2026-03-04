@@ -13,7 +13,7 @@ import { HackleThreadsExpedition } from "./HackleThreadsExpedition";
 import { Identity } from "./Identity";
 import { TappCarExpedition } from "./TappCarExpedition";
 
-export const Resume = () => {
+export const Resume = ({ isExporting = false }: { isExporting?: boolean }) => {
     const [flyGameOpen, setFlyGameOpen] = useState(false);
 
     return (
@@ -67,7 +67,7 @@ export const Resume = () => {
                                 <MapPin size={14} className="text-lime-600" />{" "}
                                 Golden, BC, Canada
                             </span>
-                            <span className="bg-white/10 px-2 py-0.5 rounded text-[10px] border border-white/10">
+                            <span className="bg-white/10 px-2 py-0.5 rounded text-[0.625rem] border border-white/10">
                                 Open to Work
                             </span>
                         </div>
@@ -84,8 +84,8 @@ export const Resume = () => {
                                     Summary
                                 </h2>
                             </div>
-                            <div className="prose prose-invert max-w-none space-y-3 text-slate-300 text-[13px]">
-                                <p className="text-lg font-medium text-white italic border-l-4 border-lime-500 pl-4">
+                            <div className={`prose prose-invert max-w-none space-y-3 text-slate-300 ${isExporting ? "text-sm" : "text-[13px]"}`}>
+                                <p className={`font-medium text-white italic border-l-4 border-lime-500 pl-4 ${isExporting ? "text-xl" : "text-lg"}`}>
                                     "I'm a technical leader with 8+ years
                                     building and scaling data-driven SaaS
                                     platforms, leading engineering teams, and
@@ -109,6 +109,14 @@ export const Resume = () => {
                                 </p>
                             </div>
                         </div>
+
+                        {/* Contact + Essentials shown here only during export */}
+                        {isExporting && (
+                            <>
+                                <ContactCard />
+                                <EssentialsCard />
+                            </>
+                        )}
                     </div>
 
                     {/* RIGHT COLUMN: About Me */}
@@ -131,11 +139,13 @@ export const Resume = () => {
                         </div>
                     </div>
 
-                    {/* SIDEBAR ITEMS */}
-                    <div className="md:col-span-12 space-y-4">
-                        <ContactCard />
-                        <EssentialsCard />
-                    </div>
+                    {/* SIDEBAR ITEMS — hidden during export (moved to left column above) */}
+                    {!isExporting && (
+                        <div className="md:col-span-12 space-y-4">
+                            <ContactCard />
+                            <EssentialsCard />
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
@@ -145,7 +155,7 @@ export const Resume = () => {
 /* Helper Cards */
 const ContactCard = () => (
     <div className="bg-lime-400 text-black p-6 rounded-[2.5rem] shadow-[0_0_30px_rgba(163,230,53,0.2)]">
-        <h3 className="text-[10px] font-black uppercase mb-3 opacity-70">
+        <h3 className="text-[0.625rem] font-black uppercase mb-3 opacity-70">
             External and Contact
         </h3>
         <div className="space-y-3 font-bold text-xs">
@@ -175,7 +185,7 @@ const ContactCard = () => (
 
 const EssentialsCard = () => (
     <div className="bg-white/5 border border-white/10 p-6 rounded-[2.5rem]">
-        <h3 className="text-[10px] font-black uppercase mb-3 text-slate-500">
+        <h3 className="text-[0.625rem] font-black uppercase mb-3 text-slate-500">
             Essentials
         </h3>
         <div className="flex flex-wrap gap-2">

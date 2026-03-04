@@ -104,14 +104,14 @@ export const HackleThreadsExpedition = () => {
                                     />
                                 </h3>
                             </div>
-                            <p className="text-slate-400 font-mono text-[10px] uppercase font-bold tracking-[0.2em] mt-2">
+                            <p className="text-slate-400 font-mono text-[0.625rem] uppercase font-bold tracking-[0.2em] mt-2">
                                 Founder | Dec 2024 - Present
                             </p>
                         </div>
 
                         <div className="flex gap-4">
                             <div className="text-right">
-                                <p className="text-[9px] uppercase font-black text-slate-500 tracking-tighter">
+                                <p className="text-[0.5625rem] uppercase font-black text-slate-500 tracking-tighter">
                                     Patterns
                                 </p>
                                 <p className="text-xl font-black text-white italic leading-none">
@@ -119,7 +119,7 @@ export const HackleThreadsExpedition = () => {
                                 </p>
                             </div>
                             <div className="text-right border-l border-white/10 pl-4">
-                                <p className="text-[9px] uppercase font-black text-slate-500 tracking-tighter">
+                                <p className="text-[0.5625rem] uppercase font-black text-slate-500 tracking-tighter">
                                     Active Users
                                 </p>
                                 <p className="text-xl font-black text-white italic leading-none">
@@ -131,7 +131,7 @@ export const HackleThreadsExpedition = () => {
 
                     <div className="grid md:grid-cols-2 gap-6 mb-8">
                         <div className="space-y-4">
-                            <div className="flex items-center gap-2 text-lime-500 font-black text-[10px] uppercase tracking-widest">
+                            <div className="flex items-center gap-2 text-lime-500 font-black text-[0.625rem] uppercase tracking-widest">
                                 <MapIcon size={14} /> Geospatial Discovery
                             </div>
                             <p className="text-sm text-slate-300 leading-relaxed">
@@ -149,7 +149,7 @@ export const HackleThreadsExpedition = () => {
                             </p>
                         </div>
                         <div className="space-y-4">
-                            <div className="flex items-center gap-2 text-lime-500 font-black text-[10px] uppercase tracking-widest">
+                            <div className="flex items-center gap-2 text-lime-500 font-black text-[0.625rem] uppercase tracking-widest">
                                 <Layers size={14} /> UX Architecture
                             </div>
                             <p className="text-sm text-slate-300 leading-relaxed">
@@ -163,7 +163,7 @@ export const HackleThreadsExpedition = () => {
                             </p>
                         </div>
                         <div className="space-y-4">
-                            <div className="flex items-center gap-2 text-lime-500 font-black text-[10px] uppercase tracking-widest">
+                            <div className="flex items-center gap-2 text-lime-500 font-black text-[0.625rem] uppercase tracking-widest">
                                 <Smartphone size={14} /> Native Apps
                             </div>
                             <p className="text-sm text-slate-300 leading-relaxed">
@@ -178,16 +178,16 @@ export const HackleThreadsExpedition = () => {
                         {[
                             "Next.js",
                             "PostGIS",
-                            "MapLibre",
+                            "Mapbox GL",
                             "Tailwind CSS",
                             "Geospatial Search",
-                            "Clustering",
+                            "API Design",
                             "React Native",
                             "Expo",
                         ].map((s) => (
                             <span
                                 key={s}
-                                className="px-3 py-1 rounded-full bg-black/40 text-[9px] font-bold text-slate-400 border border-white/5 uppercase tracking-tighter"
+                                className="px-3 py-1 rounded-full bg-black/40 text-[0.5625rem] font-bold text-slate-400 border border-white/5 uppercase tracking-tighter"
                             >
                                 {s}
                             </span>

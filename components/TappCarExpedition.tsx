@@ -77,13 +77,13 @@ export const TappCarExpedition = () => {
                                 }}
                             />
                         </h3>
-                        <p className="text-orange-400 font-mono text-[10px] uppercase font-bold tracking-[0.2em] my-2">
+                        <p className="text-orange-400 font-mono text-[0.625rem] uppercase font-bold tracking-[0.2em] my-2">
                             Chief Technology Officer | Jan 2016 - Jul 2017
                         </p>
                     </div>
                     <div className="flex gap-4">
                         <div className="text-right">
-                            <p className="text-[9px] uppercase font-black text-slate-500 tracking-tighter">
+                            <p className="text-[0.5625rem] uppercase font-black text-slate-500 tracking-tighter">
                                 Trips
                             </p>
                             <p className="text-xl font-black text-white italic leading-none">
@@ -91,7 +91,7 @@ export const TappCarExpedition = () => {
                             </p>
                         </div>
                         <div className="text-right border-l border-white/10 pl-4">
-                            <p className="text-[9px] uppercase font-black text-slate-500 tracking-tighter">
+                            <p className="text-[0.5625rem] uppercase font-black text-slate-500 tracking-tighter">
                                 Drivers
                             </p>
                             <p className="text-xl font-black text-white italic leading-none">

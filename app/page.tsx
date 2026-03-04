@@ -17,6 +17,9 @@ export default function ResumePage() {
             const { toCanvas } = await import("html-to-image");
             const { default: jsPDF } = await import("jspdf");
 
+            // Scale up all rem-based text for export
+            document.documentElement.style.fontSize = "20px";
+
             const accordionButtons = Array.from(
                 document.querySelectorAll<HTMLButtonElement>("button.w-full.text-left")
             );
@@ -67,8 +70,10 @@ export default function ResumePage() {
             );
 
             accordionButtons.forEach((btn) => btn.click());
+            document.documentElement.style.fontSize = "";
         } catch (err) {
             console.error("PDF export failed:", err);
+            document.documentElement.style.fontSize = "";
         } finally {
             setIsExporting(false);
         }
@@ -362,7 +367,7 @@ export default function ResumePage() {
                 </div>
             )}
 
-            <Resume />
+            <Resume isExporting={isExporting} />
         </main>
     );
 }

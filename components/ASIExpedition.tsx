@@ -37,7 +37,7 @@ export const ASIExpedition = () => {
                     icon: <Target size={14} />,
                     bullets: [
                         "Own end-to-end product development for our market research SaaS platform, including roadmap planning and prioritization.",
-                        "Translate client needs and business goals into clear product specs, workflows, and feature epics.",
+                        "Translate client needs and business goals into clear product specs and workflows.",
                         "Collaborate with executives, researchers, and data scientists to shape product direction.",
                     ],
                 },
@@ -45,7 +45,7 @@ export const ASIExpedition = () => {
                     label: "Technical Leadership",
                     icon: <Code2 size={14} />,
                     bullets: [
-                        "Lead a distributed engineering team, driving architecture decisions, code quality, and sprint execution.",
+                        "Lead a distributed engineering team, driving architecture decisions, code quality, and execution.",
                         "Architect and implement complex Next.js/TypeScript features across the platform.",
                         "Mentor engineers, unblock technical challenges, and refine development processes.",
                     ],
@@ -54,7 +54,7 @@ export const ASIExpedition = () => {
                     label: "Impact",
                     icon: <Trophy size={14} />,
                     bullets: [
-                        "Delivered major feature releases that improved platform reliability and client adoption.",
+                        "Delivered major feature releases that improved platform reliability and client adoption/retention.",
                         "Implemented processes that increased development velocity and strengthened cross-team collaboration.",
                     ],
                 },
@@ -86,7 +86,7 @@ export const ASIExpedition = () => {
                     label: "Impact",
                     icon: <Trophy size={14} />,
                     bullets: [
-                        "Accelerated dataset onboarding and improved data quality through workflow automation.",
+                        "Accelerated dataset creation and improved quality.",
                     ],
                 },
             ],
@@ -299,7 +299,7 @@ export const ASIExpedition = () => {
                                 </h3>
                             </div>
 
-                            <p className="text-indigo-400 font-mono text-[10px] uppercase font-bold tracking-[0.2em] mt-2">
+                            <p className="text-indigo-400 font-mono text-[0.625rem] uppercase font-bold tracking-[0.2em] mt-2">
                                 Remote | Aug 2017 - Present
                             </p>
                         </div>
@@ -331,7 +331,7 @@ export const ASIExpedition = () => {
                                     >
                                         {role.title}
                                     </h4>
-                                    <p className="text-[10px] font-mono text-slate-500 mt-1 uppercase">
+                                    <p className="text-[0.625rem] font-mono text-slate-500 mt-1 uppercase">
                                         {role.period} • {role.type}
                                     </p>
                                 </div>
@@ -361,7 +361,7 @@ export const ASIExpedition = () => {
                                                 key={idx}
                                                 className="space-y-3"
                                             >
-                                                <div className="flex items-center gap-2 text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em]">
+                                                <div className="flex items-center gap-2 text-[0.625rem] font-black text-indigo-400 uppercase tracking-[0.2em]">
                                                     {section.icon}
                                                     {section.label}
                                                 </div>

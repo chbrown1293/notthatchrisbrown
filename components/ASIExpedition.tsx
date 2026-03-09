@@ -13,7 +13,102 @@ import Link from "next/link";
 import { useState } from "react";
 import Modal from "./Modal";
 
-export const ASIExpedition = () => {
+export const asiRoles = [
+    {
+        id: "dev-manager",
+        title: "Development Manager",
+        period: "Jun 2023 - Present",
+        type: "Permanent Full-time",
+        sections: [
+            {
+                label: "Technical Leadership",
+                icon: <Code2 size={14} />,
+                bullets: [
+                    "Lead a distributed engineering team, driving architecture decisions, code quality, and execution.",
+                    "Architect and implement complex Next.js/TypeScript features across the platform.",
+                    "Mentor engineers, unblock technical challenges, and refine development processes.",
+                    "Developed an API interface for askpolly to integrate into Microsoft Copilot.",
+                ],
+            },
+            {
+                label: "Product & Strategy",
+                icon: <Target size={14} />,
+                bullets: [
+                    "Own end-to-end product development for our market research SaaS platform, including roadmap planning and prioritization.",
+                    "Translate client needs and business goals into clear product specs and workflows.",
+                    "Collaborate with executives, researchers, and data scientists to shape product direction.",
+                ],
+            },
+            {
+                label: "Impact",
+                icon: <Trophy size={14} />,
+                bullets: [
+                    "Delivered major feature releases that improved platform reliability and client adoption/retention.",
+                    "Implemented processes that increased development velocity and strengthened cross-team collaboration.",
+                ],
+            },
+        ],
+    },
+    {
+        id: "prod-dev-manager",
+        title: "Product Development Manager",
+        period: "Feb 2020 - Jun 2023",
+        type: "Permanent Full-time",
+        sections: [
+            {
+                label: "Technical Leadership",
+                icon: <Zap size={14} />,
+                bullets: [
+                    "Guided system architecture for ingestion pipelines, indexing, and performance improvements.",
+                    "Oversaw migration from self-hosted to managed Elasticsearch, improving reliability.",
+                    "Led development of a new Next.js/TypeScript web application for our SaaS platform.",
+                ],
+            },
+            {
+                label: "Product & Strategy",
+                icon: <BarChart3 size={14} />,
+                bullets: [
+                    "Defined product direction for new data sources, annotation workflows, and analytics features.",
+                    "Led development of a self-serve research tool used by clients to explore proprietary datasets.",
+                ],
+            },
+            {
+                label: "Impact",
+                icon: <Trophy size={14} />,
+                bullets: [
+                    "Accelerated dataset creation and improved quality.",
+                    "Delivered an MVP of our SaaS platform that has since become the core of ASI's offerings, allowing clients to self-serve their public opinion research needs.",
+                ],
+            },
+        ],
+    },
+    {
+        id: "software-engineer",
+        title: "Software Engineer",
+        period: "Aug 2017 - Feb 2020",
+        type: "Permanent Full-time",
+        sections: [
+            {
+                label: "Technical Contributions",
+                icon: <Code2 size={14} />,
+                bullets: [
+                    "Developed ingestion pipelines, annotation systems, and client-facing data visualizations.",
+                    "Optimized Elasticsearch clusters, improving access to large-scale datasets.",
+                    "Built whitelabel tools for clients to explore and visualize research data.",
+                ],
+            },
+            {
+                label: "Impact",
+                icon: <Trophy size={14} />,
+                bullets: [
+                    "Enabled ASI to scale data collection and analysis capabilities, leading to increased client satisfaction and business growth.",
+                ],
+            },
+        ],
+    },
+];
+
+export const ASIExpedition = ({ isExporting = false }: { isExporting?: boolean }) => {
     const [expandedRoles, setExpandedRoles] = useState<Set<string>>(new Set());
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -25,89 +120,7 @@ export const ASIExpedition = () => {
         });
     };
 
-    const roles = [
-        {
-            id: "dev-manager",
-            title: "Development Manager",
-            period: "Jun 2023 - Present",
-            type: "Permanent Full-time",
-            sections: [
-                {
-                    label: "Product & Strategy",
-                    icon: <Target size={14} />,
-                    bullets: [
-                        "Own end-to-end product development for our market research SaaS platform, including roadmap planning and prioritization.",
-                        "Translate client needs and business goals into clear product specs and workflows.",
-                        "Collaborate with executives, researchers, and data scientists to shape product direction.",
-                    ],
-                },
-                {
-                    label: "Technical Leadership",
-                    icon: <Code2 size={14} />,
-                    bullets: [
-                        "Lead a distributed engineering team, driving architecture decisions, code quality, and execution.",
-                        "Architect and implement complex Next.js/TypeScript features across the platform.",
-                        "Mentor engineers, unblock technical challenges, and refine development processes.",
-                    ],
-                },
-                {
-                    label: "Impact",
-                    icon: <Trophy size={14} />,
-                    bullets: [
-                        "Delivered major feature releases that improved platform reliability and client adoption/retention.",
-                        "Implemented processes that increased development velocity and strengthened cross-team collaboration.",
-                    ],
-                },
-            ],
-        },
-        {
-            id: "prod-dev-manager",
-            title: "Product Development Manager",
-            period: "Feb 2020 - Jun 2023",
-            type: "Permanent Full-time",
-            sections: [
-                {
-                    label: "Product & Strategy",
-                    icon: <BarChart3 size={14} />,
-                    bullets: [
-                        "Defined product direction for new data sources, annotation workflows, and analytics features.",
-                        "Led development of a self-serve research tool used by clients to explore proprietary datasets.",
-                    ],
-                },
-                {
-                    label: "Technical Leadership",
-                    icon: <Zap size={14} />,
-                    bullets: [
-                        "Guided system architecture for ingestion pipelines, indexing, and performance improvements.",
-                        "Oversaw migration from self-hosted to managed Elasticsearch, improving reliability.",
-                    ],
-                },
-                {
-                    label: "Impact",
-                    icon: <Trophy size={14} />,
-                    bullets: [
-                        "Accelerated dataset creation and improved quality.",
-                    ],
-                },
-            ],
-        },
-        {
-            id: "software-engineer",
-            title: "Software Engineer",
-            period: "Aug 2017 - Feb 2020",
-            type: "Permanent Full-time",
-            sections: [
-                {
-                    label: "Technical Contributions",
-                    icon: <Code2 size={14} />,
-                    bullets: [
-                        "Developed ingestion pipelines, annotation systems, and client-facing data visualizations.",
-                        "Optimized Elasticsearch clusters, improving access to large-scale datasets.",
-                    ],
-                },
-            ],
-        },
-    ];
+    const roles = asiRoles;
 
     const ASILogo = (
         <svg
@@ -349,7 +362,7 @@ export const ASIExpedition = () => {
                             {/* Expandable Content Area */}
                             <div
                                 className={`grid transition-all duration-300 ease-in-out print:grid-rows-[1fr] print:opacity-100 ${
-                                    expandedRoles.has(role.id)
+                                    isExporting || expandedRoles.has(role.id)
                                         ? "grid-rows-[1fr] opacity-100 mt-2"
                                         : "grid-rows-[0fr] opacity-0"
                                 }`}

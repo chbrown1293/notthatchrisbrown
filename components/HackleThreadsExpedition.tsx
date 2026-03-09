@@ -23,11 +23,11 @@ export const HackleThreadsExpedition = () => {
                 >
                     <p className="text-sm text-gray-300">
                         Hackle+Threads is a web platform I built to share and
-                        discover fly-tying patterns with a geospatial twist. As
-                        an avid fly-fisherman, I wanted to create a tool that
-                        helps anglers find patterns tied for specific locations
-                        around the world. The platform allows users to upload
-                        their own patterns, and find others' patterns based on:
+                        discover fly-tying patterns. As an avid fly-fisher, I
+                        wanted to create a tool that helps anglers find patterns
+                        tied for specific locations around the world. The
+                        platform allows users to upload their own patterns, and
+                        find others' patterns based on:
                     </p>
                     <ul className="list-disc text-sm text-gray-300 mt-4 space-y-2 ml-8">
                         <li className="leading-tight">
@@ -138,14 +138,14 @@ export const HackleThreadsExpedition = () => {
                                 Engineered a high-performance discovery tool
                                 using{" "}
                                 <span className="text-white font-bold">
-                                    MapLibre
+                                    Mapbox GL
                                 </span>{" "}
                                 and{" "}
                                 <span className="text-white font-bold">
                                     PostGIS
                                 </span>
                                 . Implemented clustering logic for global
-                                pattern sharing and regional fly-tying trends.
+                                pattern visualization.
                             </p>
                         </div>
                         <div className="space-y-4">
@@ -157,9 +157,12 @@ export const HackleThreadsExpedition = () => {
                                 <span className="text-white font-bold">
                                     step-by-step tying interfaces
                                 </span>{" "}
-                                and interactive dashboards. Managed full product
-                                lifecycle from Figma wireframes to Vercel
-                                deployment.
+                                and interactive features such as a{" "}
+                                <span className="text-white font-bold">
+                                    virtual fly box
+                                </span>
+                                . Managed full product lifecycle from Figma
+                                wireframes to Vercel deployment.
                             </p>
                         </div>
                         <div className="space-y-4">

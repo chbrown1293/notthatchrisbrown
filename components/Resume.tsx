@@ -59,8 +59,7 @@ export const Resume = ({ isExporting = false }: { isExporting?: boolean }) => {
                             Chris Brown
                         </h1>
                         <p className="text-lime-400 font-mono text-sm uppercase font-black mt-2">
-                            Technical Product Leader | Engineering Manager |
-                            Full-Stack
+                            Engineering Manager | Full-Stack Developer
                         </p>
                         <div className="flex items-center justify-center gap-4 mt-4 text-slate-400 text-xs font-bold uppercase tracking-widest">
                             <span className="flex items-center gap-1">
@@ -84,19 +83,25 @@ export const Resume = ({ isExporting = false }: { isExporting?: boolean }) => {
                                     Summary
                                 </h2>
                             </div>
-                            <div className={`prose prose-invert max-w-none space-y-3 text-slate-300 ${isExporting ? "text-sm" : "text-[13px]"}`}>
-                                <p className={`font-medium text-white italic border-l-4 border-lime-500 pl-4 ${isExporting ? "text-xl" : "text-lg"}`}>
+                            <div
+                                className={`prose prose-invert max-w-none space-y-3 text-slate-300 ${isExporting ? "text-sm" : "text-[13px]"}`}
+                            >
+                                <p
+                                    className={`font-medium text-white italic border-l-4 border-lime-500 pl-4 ${isExporting ? "text-xl" : "text-lg"}`}
+                                >
                                     "I'm a technical leader with 8+ years
                                     building and scaling data-driven SaaS
                                     platforms, leading engineering teams, and
                                     shaping product strategy."
                                 </p>
                                 <p>
-                                    My background spans product development,
-                                    full-stack engineering, data pipelines, and
-                                    research analytics. This gives me a unique
-                                    ability to bridge engineering, product, and
-                                    business needs.
+                                    My background spans full-stack engineering,
+                                    product development, data pipelines, and
+                                    research analytics/visualization. I've led
+                                    teams at high-growth startups and
+                                    collaborated closely with cross-functional
+                                    partners to drive product innovation and
+                                    business growth.
                                 </p>
                                 <p>
                                     I thrive in roles where I can combine deep
@@ -114,7 +119,6 @@ export const Resume = ({ isExporting = false }: { isExporting?: boolean }) => {
                         {isExporting && (
                             <>
                                 <ContactCard />
-                                <EssentialsCard />
                             </>
                         )}
                     </div>
@@ -131,7 +135,7 @@ export const Resume = ({ isExporting = false }: { isExporting?: boolean }) => {
                         </h4>
 
                         <div className="space-y-6">
-                            <ASIExpedition />
+                            <ASIExpedition isExporting={isExporting} />
                             <HackleThreadsExpedition />
                             <TappCarExpedition />
                             <EarlyExpeditions />
@@ -143,7 +147,6 @@ export const Resume = ({ isExporting = false }: { isExporting?: boolean }) => {
                     {!isExporting && (
                         <div className="md:col-span-12 space-y-4">
                             <ContactCard />
-                            <EssentialsCard />
                         </div>
                     )}
                 </div>

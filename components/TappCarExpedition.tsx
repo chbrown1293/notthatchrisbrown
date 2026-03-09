@@ -108,9 +108,16 @@ export const TappCarExpedition = () => {
                             Technical Leadership
                         </div>
                         <p className="text-xs text-slate-400 leading-relaxed">
-                            Led development across iOS, Android, and Web
-                            platforms. Designed fraud detection, pricing models,
-                            and real-time dashboards for 300+ drivers.
+                            Reduced initial time-to-market to under 45 days by
+                            licensing core mobile dispatch technology, allowing
+                            the team to focus resources on building a custom
+                            operational CRM and driver dashboards.
+                        </p>
+                        <p className="text-xs text-slate-400 leading-relaxed">
+                            Designed dashboards for 300+ drivers and our
+                            dispatch team. Built a custom API interface to
+                            integrate with international airport ride share
+                            tracking systems.
                         </p>
                     </div>
                     <div className="space-y-4">
@@ -123,8 +130,14 @@ export const TappCarExpedition = () => {
                         </div>
                         <p className="text-xs text-slate-400 leading-relaxed">
                             Prioritized features based on KPI analysis and
-                            customer feedback. Built APIs for international
-                            airport integrations.
+                            customer feedback. Created pricing models and
+                            designed driver incentives to drive growth and
+                            retention.
+                        </p>
+                        <p className="text-xs text-slate-400 leading-relaxed">
+                            Led the development of fraud detection systems,
+                            reduing chargebacks and improving driver
+                            satisfaction.
                         </p>
                     </div>
                 </div>

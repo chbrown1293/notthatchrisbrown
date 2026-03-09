@@ -108,7 +108,11 @@ export const asiRoles = [
     },
 ];
 
-export const ASIExpedition = ({ isExporting = false }: { isExporting?: boolean }) => {
+export const ASIExpedition = ({
+    isExporting = false,
+}: {
+    isExporting?: boolean;
+}) => {
     const [expandedRoles, setExpandedRoles] = useState<Set<string>>(new Set());
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -328,7 +332,7 @@ export const ASIExpedition = ({ isExporting = false }: { isExporting?: boolean }
 
                 {/* Roles List */}
                 <div className="divide-y divide-white/5">
-                    {roles.map((role) => (
+                    {roles.map((role, rIdx) => (
                         <div key={role.id} className="group/role">
                             <button
                                 onClick={() => toggleRole(role.id)}
@@ -383,7 +387,7 @@ export const ASIExpedition = ({ isExporting = false }: { isExporting?: boolean }
                                                         (bullet, bIdx) => (
                                                             <li
                                                                 key={bIdx}
-                                                                className="text-sm text-slate-400 leading-relaxed flex gap-3"
+                                                                className={`text-sm text-slate-400 leading-relaxed flex gap-3 ${isExporting && rIdx === 0 && idx === 2 && bIdx === 1 ? "mt-4" : ""}`}
                                                             >
                                                                 <span className="mt-1.5 h-1 w-1 rounded-full bg-indigo-500/50 shrink-0" />
                                                                 {bullet}

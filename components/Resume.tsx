@@ -137,7 +137,7 @@ export const Resume = ({ isExporting = false }: { isExporting?: boolean }) => {
                         <div className="space-y-6">
                             <ASIExpedition isExporting={isExporting} />
                             <HackleThreadsExpedition />
-                            <TappCarExpedition />
+                            <TappCarExpedition isExporting={isExporting} />
                             <EarlyExpeditions />
                             <EducationBasecamp />
                         </div>

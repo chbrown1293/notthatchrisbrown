@@ -3,7 +3,11 @@ import Link from "next/link";
 import { useState } from "react";
 import Modal from "./Modal";
 
-export const TappCarExpedition = () => {
+export const TappCarExpedition = ({
+    isExporting = false,
+}: {
+    isExporting?: boolean;
+}) => {
     const [modalOpen, setModalOpen] = useState(false);
 
     return (
@@ -113,7 +117,9 @@ export const TappCarExpedition = () => {
                             the team to focus resources on building a custom
                             operational CRM and driver dashboards.
                         </p>
-                        <p className="text-xs text-slate-400 leading-relaxed">
+                        <p
+                            className={`text-xs text-slate-400 leading-relaxed ${isExporting ? "mt-5" : ""}`}
+                        >
                             Designed dashboards for 300+ drivers and our
                             dispatch team. Built a custom API interface to
                             integrate with international airport ride share
@@ -134,7 +140,9 @@ export const TappCarExpedition = () => {
                             designed driver incentives to drive growth and
                             retention.
                         </p>
-                        <p className="text-xs text-slate-400 leading-relaxed">
+                        <p
+                            className={`text-xs text-slate-400 leading-relaxed ${isExporting ? "mt-5" : ""}`}
+                        >
                             Led the development of fraud detection systems,
                             reduing chargebacks and improving driver
                             satisfaction.
